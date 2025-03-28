@@ -1,0 +1,13 @@
+Flask==2.3.3
+Flask-SQLAlchemy==3.1.1
+Flask-WTF==1.2.1
+python-dotenv==1.0.0
+pyinstaller==6.1.0
+pywebview==4.4.1
+matplotlib==3.10.1
+librosa==0.10.0
+APScheduler==3.11.0
+pywhatkit==5.4
+pyautogui==0.9.54
+pytest==7.4.3
+pytest-cov==4.1.0
