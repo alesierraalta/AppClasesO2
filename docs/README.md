@@ -21,7 +21,22 @@ Sistema de gestión de clases para gimnasios y estudios fitness. Permite la admi
 - SQLAlchemy
 - Otras dependencias en requirements.txt
 
-## Instalación
+## Instalación Rápida
+
+### Windows
+
+Para instalar rápidamente en Windows, descargue y ejecute uno de estos scripts:
+
+- [Instalador completo](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/instalar_desde_github.bat) - Instalación con todas las funcionalidades
+- [Instalador simple](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/instalar_simple.bat) - Versión simplificada compatible con todas las versiones de Python
+
+### Actualización
+
+Para actualizar una instalación existente:
+
+- [Script de actualización](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/actualizar_desde_github.bat)
+
+## Instalación Manual
 
 1. Clonar el repositorio:
 ```
@@ -48,17 +63,27 @@ cp .env.example .env
 
 5. Iniciar la aplicación:
 ```
-python app.py
+python app/core/app.py
 ```
 
 ## Estructura del Proyecto
 
-- `app.py`: Aplicación principal Flask
-- `models.py`: Modelos de datos
-- `notifications.py`: Sistema de notificaciones
+- `app/core/`: Aplicación principal Flask
+- `app/models/`: Modelos de datos
+- `app/utils/`: Utilidades y funciones auxiliares
+- `app/routes/`: Rutas de la aplicación
 - `templates/`: Plantillas HTML
 - `static/`: Archivos estáticos (CSS, JS, imágenes)
 - `tests/`: Pruebas unitarias y de integración
+- `docs/`: Documentación adicional
+
+## Documentación
+
+Para obtener más información, consulte:
+
+- [Guía de instalación detallada](docs/INSTALACION.md)
+- [Configuración para múltiples PCs](docs/README_MULTIPC.md)
+- [Guía para Mac](docs/README_MAC.md)
 
 ## Licencia
 
