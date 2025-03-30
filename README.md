@@ -2,27 +2,47 @@
 
 Sistema de gestión para gimnasios con múltiples funciones y soporte para redes locales.
 
-## Instalación Local (recomendado)
+## Instalación Portable (recomendado)
 
-Para instalar GymManager desde los archivos locales del repositorio, siga estos pasos:
+Para instalar GymManager en modo portable sin usar el disco C:
+
+1. Descargue o clone este repositorio en su ordenador
+2. Ejecute el archivo: `scripts/windows/instalar_portable.bat`
+3. Siga las instrucciones en pantalla para completar la instalación
+
+El instalador portable crea todos los archivos necesarios dentro de la misma carpeta del repositorio.
+
+## Actualización Portable (recomendado)
+
+Para actualizar GymManager en modo portable:
+
+1. Descargue o clone la versión más reciente del repositorio
+2. Ejecute el archivo: `scripts/windows/actualizar_portable.bat` 
+3. Siga las instrucciones en pantalla para completar la actualización
+
+El actualizador portable mantiene todos los datos dentro de la carpeta del repositorio.
+
+## Instalación Local (alternativa)
+
+Para instalar GymManager desde los archivos locales del repositorio en una ubicación fija (C:\GymManager):
 
 1. Descargue o clone este repositorio en su ordenador
 2. Ejecute como administrador el archivo: `scripts/windows/instalar_local.bat`
 3. Siga las instrucciones en pantalla para completar la instalación
 
-El instalador local no descarga nada desde Internet, utiliza los archivos que ya ha descargado.
+Esta opción requiere permisos de administrador para escribir en C:.
 
-## Actualización Local (recomendado)
+## Actualización Local (alternativa)
 
-Para actualizar GymManager desde los archivos locales del repositorio:
+Para actualizar GymManager instalado en C:\GymManager:
 
 1. Descargue o clone la versión más reciente del repositorio
 2. Ejecute como administrador el archivo: `scripts/windows/actualizar_local.bat` 
 3. Siga las instrucciones en pantalla para completar la actualización
 
-El actualizador local no descarga nada desde Internet, utiliza los archivos que ya ha descargado.
+Esta opción requiere permisos de administrador para escribir en C:.
 
-## Instalación desde GitHub (alternativa)
+## Instalación desde GitHub
 
 Si prefiere que el instalador descargue automáticamente el código desde GitHub:
 
@@ -30,7 +50,7 @@ Si prefiere que el instalador descargue automáticamente el código desde GitHub
 2. Ejecute como administrador dicho archivo
 3. Siga las instrucciones en pantalla
 
-## Actualización desde GitHub (alternativa)
+## Actualización desde GitHub
 
 Si prefiere que el actualizador descargue automáticamente el código desde GitHub:
 
@@ -41,8 +61,7 @@ Si prefiere que el actualizador descargue automáticamente el código desde GitH
 ## Requisitos
 
 - Windows 7/8/10/11
-- Permisos de administrador para la instalación
-- Python 3.8 o superior (se instala automáticamente)
+- Python 3.8 o superior (se instala automáticamente si usa instalador desde GitHub)
 - Conexión a Internet (solo para actualizar dependencias)
 
 ## Funcionalidades
@@ -96,15 +115,12 @@ Para más detalles sobre el flujo de desarrollo, consulte [DESARROLLO_MAC.md](do
 
 ## Uso
 
-Ejecute desde la raíz del proyecto:
+Si instaló en modo portable:
+- Ejecute `GymManager.bat` en la carpeta principal
+- Utilice `Administrar.bat` para acceder a herramientas administrativas
 
-```
-python main.py
-```
-
-O utilice los accesos directos creados en el escritorio:
-- `GymManager` - Inicia la aplicación
-- `Administrar GymManager` - Herramientas de administración
+Si instaló en modo local o desde GitHub:
+- Utilice los accesos directos creados en el escritorio
 
 ## Sincronización entre Equipos
 
