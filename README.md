@@ -11,6 +11,19 @@ GymManager es una aplicación completa para la gestión de gimnasios y academias
 - Sincronización entre múltiples computadoras
 - Interfaz fácil de usar
 
+## Instalación Rápida (Nuevo)
+
+1. **Descarga el instalador automático:**
+   - [Descargar instalar_automatico.bat](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/instalar_automatico.bat) (clic derecho → Guardar como...)
+   - Este método requiere que Python esté previamente instalado
+
+2. **Ejecuta el instalador:**
+   - Haz doble clic en el archivo descargado
+   - El script descargará e instalará todo automáticamente
+   - Se creará un acceso directo en el escritorio
+
+Para métodos alternativos de instalación e instrucciones detalladas, consulta nuestra [Guía de Instalación](docs/INSTALACION.md).
+
 ## Requisitos del Sistema
 
 - Python 3.8 o superior
@@ -18,36 +31,6 @@ GymManager es una aplicación completa para la gestión de gimnasios y academias
 - 4GB de RAM mínimo
 - Conexión a internet para instalación inicial
 - Red local para sincronización multi-PC
-
-## Instalación
-
-### Instalación desde Ejecutable
-
-1. Descargue el archivo de instalación desde la [página de releases](https://github.com/tu-usuario/gymmanager/releases)
-2. Extraiga el contenido del archivo ZIP en una carpeta
-3. Ejecute `setup.exe` y siga las instrucciones en pantalla
-
-### Instalación desde Código Fuente
-
-1. Clone el repositorio:
-   ```
-   git clone https://github.com/tu-usuario/gymmanager.git
-   ```
-
-2. Instale las dependencias:
-   ```
-   pip install -r requirements.txt
-   ```
-
-3. Configure la base de datos:
-   ```
-   python main.py --setup-db
-   ```
-
-4. Inicie la aplicación:
-   ```
-   python main.py
-   ```
 
 ## Configuración en Múltiples Equipos
 
