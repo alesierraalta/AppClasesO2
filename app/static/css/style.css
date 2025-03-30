@@ -1,195 +1,256 @@
-/* iOS Design System */
+/**
+ * GymManager - Estilos personalizados
+ */
+
+/* Variables */
 :root {
-  --ios-system-blue: #007AFF;
-  --ios-system-green: #34C759;
-  --ios-system-red: #FF3B30;
-  --ios-system-gray-6: #F2F2F7;
-  --ios-label-primary: #000000;
-  --ios-fill-tertiary: #E5E5EA;
-  --ios-border: #C6C6C8;
-  --ios-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    --primary-color: #4e73df;
+    --secondary-color: #6c757d;
+    --success-color: #1cc88a;
+    --info-color: #36b9cc;
+    --warning-color: #f6c23e;
+    --danger-color: #e74a3b;
+    --light-color: #f8f9fc;
+    --dark-color: #5a5c69;
+    
+    --font-family-sans-serif: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    
+    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    --shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, .175);
 }
 
+/* Estilos generales */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
-  background-color: var(--ios-system-gray-6);
-  padding-bottom: 70px; /* Space for bottom tab bar */
+    font-family: var(--font-family-sans-serif);
+    background-color: #f5f8fa;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* iOS Tab Bar Navigation */
-.ios-tab-bar {
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(20px);
-  border-top: 0.5px solid var(--ios-border);
-  padding: 8px 0;
-  box-shadow: 0 -2px 20px rgba(0,0,0,0.05);
-  z-index: 1030;
+.container {
+    max-width: 1200px;
 }
 
-.ios-tab-item {
-  color: #8E8E93;
-  text-decoration: none;
-  padding: 8px 0;
-  display: block;
-  transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
-}
-
-.ios-tab-item.active {
-  color: var(--ios-system-blue);
-}
-
-.ios-tab-item i {
-  font-size: 1.4rem;
-  display: block;
-  margin-bottom: 2px;
-  transition: transform 0.2s ease;
-}
-
-.ios-tab-item:active i {
-  transform: scale(0.9);
-}
-
-.ios-tab-label {
-  font-size: 0.76rem;
-  font-weight: 500;
-  display: block;
-  letter-spacing: -0.01em;
-}
-
-/* iOS Card Components */
-.ios-card {
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  border: 0.5px solid var(--ios-border);
-  overflow: hidden;
-  margin-bottom: 16px;
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
-}
-
-.ios-card:active {
-  transform: scale(0.98);
-  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-}
-
-.ios-card-header {
-  padding: 16px;
-  border-bottom: 0.5px solid var(--ios-border);
-}
-
-.ios-card-body {
-  padding: 16px;
-}
-
-/* iOS Buttons */
-.ios-button {
-  background: var(--ios-system-blue);
-  border-radius: 10px;
-  color: white !important;
-  padding: 8px 16px;
-  border: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.ios-button:hover {
-  opacity: 0.9;
-}
-
-.ios-button:active {
-  transform: scale(0.96);
-  opacity: 0.8;
-}
-
-.ios-button-success {
-  background: var(--ios-system-green);
-}
-
-.ios-button-danger {
-  background: var(--ios-system-red);
-}
-
-/* iOS Table Styles */
-.ios-table {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  border: 0.5px solid var(--ios-border);
-}
-
-.ios-table th {
-  background-color: var(--ios-system-gray-6);
-  font-weight: 500;
-  padding: 14px 16px;
-  font-size: 0.9rem;
-}
-
-.ios-table td {
-  padding: 14px 16px;
-  border-bottom: 0.5px solid var(--ios-border);
-}
-
-.ios-table tr:last-child td {
-  border-bottom: none;
-}
-
-/* iOS Badge Styles */
-.badge {
-  padding: 5px 10px;
-  border-radius: 15px;
-  font-weight: 500;
-  font-size: 0.8rem;
-}
-
-/* iOS Typography */
+/* Encabezados */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 590;
-  letter-spacing: -0.02em;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
-.ios-title {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  margin-bottom: 8px;
+/* Enlaces */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
-.ios-subtitle {
-  font-size: 16px;
-  font-weight: 400;
-  color: #8E8E93;
-  margin-bottom: 24px;
+a:hover {
+    color: #2e59d9;
+    text-decoration: underline;
 }
 
-/* Overrides for Bootstrap */
-.bg-primary {
-  background-color: var(--ios-system-blue) !important;
-}
-
-.bg-success {
-  background-color: var(--ios-system-green) !important;
-}
-
-.bg-danger {
-  background-color: var(--ios-system-red) !important;
+/* Botones */
+.btn {
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    transition: all 0.2s;
 }
 
 .btn-primary {
-  background-color: var(--ios-system-blue);
-  border: none;
-  border-radius: 10px;
-  padding: 8px 16px;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
-.btn-success {
-  background-color: var(--ios-system-green);
-  border: none;
-  border-radius: 10px;
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #2653d4;
+    border-color: #244ec9;
 }
 
-.btn-danger {
-  background-color: var(--ios-system-red);
-  border: none;
-  border-radius: 10px;
+/* Estilos para el navbar */
+.navbar {
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+/* Estilos para tarjetas */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Estilos para footer */
+.footer {
+    margin-top: auto;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para formularios */
+.form-label {
+    font-weight: 500;
+    color: #444;
+}
+
+.form-control {
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+/* Estilos para tablas */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #e3e6f0;
+    background-color: #f8f9fc;
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.015);
+}
+
+/* Estilos para notificaciones */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 350px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+    padding: 15px;
+    margin-bottom: 10px;
+    z-index: 1050;
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+.notification-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+.notification-success {
+    border-left: 5px solid var(--success-color);
+}
+
+.notification-warning {
+    border-left: 5px solid var(--warning-color);
+}
+
+.notification-error {
+    border-left: 5px solid var(--danger-color);
+}
+
+.notification-info {
+    border-left: 5px solid var(--info-color);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Estilos para tablero/dashboard */
+.jumbotron {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.stats-card {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.stats-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.stats-label {
+    font-size: 0.875rem;
+    color: var(--secondary-color);
+}
+
+/* Estilos para acciones/botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-icon {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.action-icon-edit {
+    background-color: rgba(54, 185, 204, 0.1);
+    color: var(--info-color);
+}
+
+.action-icon-delete {
+    background-color: rgba(231, 74, 59, 0.1);
+    color: var(--danger-color);
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
 }

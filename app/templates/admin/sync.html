@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sincronización - GymManager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">GymManager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Panel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.index') }}">Administración</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Menú Administración</h5>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="{{ url_for('admin.index') }}" class="list-group-item list-group-item-action">Panel Administración</a>
+                        <a href="{{ url_for('admin.users') }}" class="list-group-item list-group-item-action">Usuarios</a>
+                        <a href="{{ url_for('admin.settings') }}" class="list-group-item list-group-item-action">Configuración</a>
+                        <a href="{{ url_for('admin.backup') }}" class="list-group-item list-group-item-action">Copias de Seguridad</a>
+                        <a href="{{ url_for('admin.sync') }}" class="list-group-item list-group-item-action active">Sincronización</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Configuración de Sincronización</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Mensajes de alerta -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <!-- Información de la PC actual -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Información de esta PC</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Número de PC:</strong> {{ pc_info.pc_number }}</p>
+                                        <p><strong>Tipo:</strong> {% if pc_info.is_server %}Servidor Principal{% else %}Cliente{% endif %}</p>
+                                        <p><strong>Descripción:</strong> {{ pc_info.description }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Dirección IP:</strong> {{ system_info.ip }}</p>
+                                        <p><strong>Nombre del equipo:</strong> {{ system_info.hostname }}</p>
+                                        <p><strong>Sistema Operativo:</strong> {{ system_info.os }} {{ system_info.os_version }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Estado de Sincronización -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Estado de Sincronización</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <p><strong>Sincronización:</strong> {% if pc_info.sync_enabled %}Activada{% else %}Desactivada{% endif %}</p>
+                                        <p><strong>Última sincronización:</strong> {{ sync_status.last_sync or 'Nunca' }}</p>
+                                        <p><strong>Estado:</strong> 
+                                            {% if sync_status.is_synced %}
+                                                <span class="badge bg-success">Sincronizado</span>
+                                            {% else %}
+                                                <span class="badge bg-warning">Pendiente</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <button id="syncNowBtn" class="btn btn-primary btn-lg mb-3">
+                                            <i class="fas fa-sync-alt"></i> Sincronizar Ahora
+                                        </button>
+                                        <div id="syncProgress" class="progress d-none">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Configuración de Sincronización -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Configuración de Sincronización</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="syncConfigForm" method="POST" action="{{ url_for('admin.sync_config_update') }}">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" id="enableSync" name="sync_enabled" {% if pc_info.sync_enabled %}checked{% endif %}>
+                                                <label class="form-check-label" for="enableSync">Habilitar sincronización</label>
+                                            </div>
+                                            
+                                            {% if not pc_info.is_server %}
+                                            <div class="mb-3">
+                                                <label for="serverIP" class="form-label">IP del Servidor Principal</label>
+                                                <input type="text" class="form-control" id="serverIP" name="server_ip" value="{{ network_config.server_ip }}">
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label for="serverPort" class="form-label">Puerto del Servidor</label>
+                                                <input type="number" class="form-control" id="serverPort" name="server_port" value="{{ network_config.server_port }}">
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="syncInterval" class="form-label">Intervalo de Sincronización (segundos)</label>
+                                                <input type="number" class="form-control" id="syncInterval" name="sync_interval" value="{{ network_config.sync_interval }}">
+                                            </div>
+                                            
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="backupBeforeSync" name="backup_before_sync" {% if network_config.backup_before_sync %}checked{% endif %}>
+                                                <label class="form-check-label" for="backupBeforeSync">Crear copia de seguridad antes de sincronizar</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+                                        <button type="button" class="btn btn-secondary" id="testConnectionBtn">Probar Conexión</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Registro de Sincronización -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Registro de Sincronización</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Tipo</th>
+                                                <th>PC</th>
+                                                <th>Estado</th>
+                                                <th>Detalles</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for log in sync_logs %}
+                                            <tr>
+                                                <td>{{ log.sync_timestamp }}</td>
+                                                <td>{{ log.sync_type }}</td>
+                                                <td>PC{{ log.pc_number }}</td>
+                                                <td>
+                                                    {% if log.status == 'success' %}
+                                                        <span class="badge bg-success">Éxito</span>
+                                                    {% elif log.status == 'warning' %}
+                                                        <span class="badge bg-warning">Advertencia</span>
+                                                    {% else %}
+                                                        <span class="badge bg-danger">Error</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ log.details }}</td>
+                                            </tr>
+                                            {% else %}
+                                            <tr>
+                                                <td colspan="5" class="text-center">No hay registros de sincronización.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">GymManager &copy; {{ now.year }}. Todos los derechos reservados.</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        // Script para la página de sincronización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Botón de sincronización manual
+            const syncNowBtn = document.getElementById('syncNowBtn');
+            const syncProgress = document.getElementById('syncProgress');
+            const progressBar = syncProgress.querySelector('.progress-bar');
+            
+            syncNowBtn.addEventListener('click', function() {
+                // Mostrar barra de progreso
+                syncProgress.classList.remove('d-none');
+                progressBar.style.width = '0%';
+                syncNowBtn.disabled = true;
+                
+                // Simular progreso (en una aplicación real, esto se haría con AJAX y eventos del servidor)
+                let progress = 0;
+                const interval = setInterval(function() {
+                    progress += 10;
+                    progressBar.style.width = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(function() {
+                            syncProgress.classList.add('d-none');
+                            syncNowBtn.disabled = false;
+                            showNotification('Sincronización completada exitosamente', 'success');
+                        }, 500);
+                    }
+                }, 300);
+                
+                // Petición AJAX para iniciar sincronización
+                fetch('/api/sync/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Sincronización iniciada:', data);
+                })
+                .catch(error => {
+                    console.error('Error al iniciar sincronización:', error);
+                    clearInterval(interval);
+                    syncProgress.classList.add('d-none');
+                    syncNowBtn.disabled = false;
+                    showNotification('Error al iniciar sincronización', 'error');
+                });
+            });
+            
+            // Botón de prueba de conexión
+            const testConnectionBtn = document.getElementById('testConnectionBtn');
+            
+            testConnectionBtn.addEventListener('click', function() {
+                const serverIP = document.getElementById('serverIP')?.value || '{{ network_config.server_ip }}';
+                const serverPort = document.getElementById('serverPort')?.value || '{{ network_config.server_port }}';
+                
+                testConnectionBtn.disabled = true;
+                testConnectionBtn.innerHTML = 'Probando...';
+                
+                // Petición AJAX para probar conexión
+                fetch('/api/sync/test_connection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        server_ip: serverIP,
+                        server_port: serverPort
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('Conexión exitosa con el servidor', 'success');
+                    } else {
+                        showNotification('No se pudo conectar con el servidor: ' + data.error, 'warning');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al probar conexión:', error);
+                    showNotification('Error al probar conexión', 'error');
+                })
+                .finally(() => {
+                    testConnectionBtn.disabled = false;
+                    testConnectionBtn.innerHTML = 'Probar Conexión';
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

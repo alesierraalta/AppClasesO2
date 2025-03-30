@@ -1,128 +1,109 @@
-# GymManager
+# GymManager - Sistema de Gestión para Gimnasios
 
-Sistema de gestión para gimnasios con múltiples funciones y soporte para redes locales.
-
-## Instalación Portable (recomendado)
-
-Para instalar GymManager en modo portable sin usar el disco C:
-
-1. Descargue o clone este repositorio en su ordenador
-2. Ejecute el archivo: `scripts/windows/instalar_portable.bat`
-3. Siga las instrucciones en pantalla para completar la instalación
-
-El instalador portable crea todos los archivos necesarios dentro de la misma carpeta del repositorio.
-
-## Actualización Portable (recomendado)
-
-Para actualizar GymManager en modo portable:
-
-1. Descargue o clone la versión más reciente del repositorio
-2. Ejecute el archivo: `scripts/windows/actualizar_portable.bat` 
-3. Siga las instrucciones en pantalla para completar la actualización
-
-El actualizador portable mantiene todos los datos dentro de la carpeta del repositorio.
-
-## Instalación Local (alternativa)
-
-Para instalar GymManager desde los archivos locales del repositorio en una ubicación fija (C:\GymManager):
-
-1. Descargue o clone este repositorio en su ordenador
-2. Ejecute como administrador el archivo: `scripts/windows/instalar_local.bat`
-3. Siga las instrucciones en pantalla para completar la instalación
-
-Esta opción requiere permisos de administrador para escribir en C:.
-
-## Actualización Local (alternativa)
-
-Para actualizar GymManager instalado en C:\GymManager:
-
-1. Descargue o clone la versión más reciente del repositorio
-2. Ejecute como administrador el archivo: `scripts/windows/actualizar_local.bat` 
-3. Siga las instrucciones en pantalla para completar la actualización
-
-Esta opción requiere permisos de administrador para escribir en C:.
-
-## Instalación desde GitHub
-
-Si prefiere que el instalador descargue automáticamente el código desde GitHub:
-
-1. Descargue únicamente el archivo: `scripts/windows/instalar_desde_github.bat`
-2. Ejecute como administrador dicho archivo
-3. Siga las instrucciones en pantalla
-
-## Actualización desde GitHub
-
-Si prefiere que el actualizador descargue automáticamente el código desde GitHub:
-
-1. Descargue únicamente el archivo: `scripts/windows/actualizar_desde_github.bat`
-2. Ejecute como administrador dicho archivo
-3. Siga las instrucciones en pantalla
-
-## Requisitos
-
-- Windows 7/8/10/11
-- Python 3.8 o superior (se instala automáticamente con cualquiera de los instaladores)
-- Conexión a Internet (solo para actualizar dependencias y descargar Python si es necesario)
-
-## Funcionalidades
-
-- Gestión de miembros y clases
-- Control de pagos y asistencias
-- Sincronización entre múltiples ordenadores
-- Copias de seguridad automáticas
-- Informes y estadísticas
-
-## Soporte
-
-Para soporte técnico, contacte con el desarrollador.
+GymManager es una aplicación completa para la gestión de gimnasios y academias de fitness, diseñada para facilitar el control de horarios, profesores, clases y más.
 
 ## Características Principales
 
-- Registro de asistencia de usuarios
-- Gestión de membresías y pagos
-- Notificaciones automáticas
-- Procesamiento de audio para anuncios
-- Sincronización entre múltiples equipos
-- Soporte multiplataforma (Windows y Mac)
+- Gestión de horarios de clases
+- Control de asistencia de profesores
+- Registro de alumnos en clases
+- Generación de informes y estadísticas
+- Sincronización entre múltiples computadoras
+- Interfaz fácil de usar
 
-## Estructura del Proyecto
+## Requisitos del Sistema
 
-Consulte [ESTRUCTURA.md](ESTRUCTURA.md) para una explicación detallada de la organización del código.
+- Python 3.8 o superior
+- Windows 10/11 (recomendado)
+- 4GB de RAM mínimo
+- Conexión a internet para instalación inicial
+- Red local para sincronización multi-PC
 
-## Desarrollo en Mac
+## Instalación
 
-Para desarrollar GymManager en un entorno Mac:
+### Instalación desde Ejecutable
 
-1. Clonar el repositorio:
+1. Descargue el archivo de instalación desde la [página de releases](https://github.com/tu-usuario/gymmanager/releases)
+2. Extraiga el contenido del archivo ZIP en una carpeta
+3. Ejecute `setup.exe` y siga las instrucciones en pantalla
+
+### Instalación desde Código Fuente
+
+1. Clone el repositorio:
    ```
-   git clone https://github.com/alesierraalta/AppClasesO2.git GymManager
-   cd GymManager
+   git clone https://github.com/tu-usuario/gymmanager.git
    ```
 
-2. Configurar entorno virtual:
+2. Instale las dependencias:
    ```
-   python -m venv venv
-   source venv/bin/activate
    pip install -r requirements.txt
    ```
 
-3. Ejecutar en modo desarrollo:
+3. Configure la base de datos:
    ```
-   python main.py --debug
+   python main.py --setup-db
    ```
 
-Para más detalles sobre el flujo de desarrollo, consulte [DESARROLLO_MAC.md](docs/DESARROLLO_MAC.md).
+4. Inicie la aplicación:
+   ```
+   python main.py
+   ```
 
-## Uso
+## Configuración en Múltiples Equipos
 
-Si instaló en modo portable:
-- Ejecute `GymManager.bat` en la carpeta principal
-- Utilice `Administrar.bat` para acceder a herramientas administrativas
+GymManager está diseñado para funcionar en una red con múltiples computadoras:
 
-Si instaló en modo local o desde GitHub:
-- Utilice los accesos directos creados en el escritorio
+- **PC1**: Servidor principal que almacena la base de datos central
+- **PC2/PC3**: Equipos secundarios que se sincronizan con el servidor
 
-## Sincronización entre Equipos
+Para la configuración detallada, consulte [Configuración Multi-PC](docs/README_MULTIPC.md).
 
-Este sistema cuenta con funcionalidad para sincronizar datos entre múltiples computadoras. 
-Para más información, consulte [README_SYNC.md](docs/README_SYNC.md). 
+### Configuración Rápida
+
+1. En cada PC, ejecute el script de configuración:
+   ```
+   scripts/windows/setup_pc.bat
+   ```
+
+2. Siga las instrucciones en pantalla para configurar cada equipo
+
+## Estructura del Proyecto
+
+```
+GymManager/
+├── app/                 # Código principal de la aplicación
+│   ├── core/            # Núcleo y funcionalidad principal
+│   ├── models/          # Modelos de datos
+│   ├── routes/          # Rutas y controladores web
+│   └── utils/           # Utilidades y helpers
+├── database/            # Scripts y archivos de base de datos
+├── docs/                # Documentación
+├── logs/                # Archivos de registro
+├── scripts/             # Scripts de utilidad
+│   ├── windows/         # Scripts para Windows
+│   └── mac/             # Scripts para Mac
+├── static/              # Archivos estáticos (CSS, JS, imágenes)
+├── templates/           # Plantillas HTML
+└── tests/               # Pruebas automatizadas
+```
+
+## Uso Básico
+
+1. Inicie la aplicación
+2. Acceda con el usuario por defecto:
+   - Usuario: `admin`
+   - Contraseña: `admin`
+3. Configure sus profesores, clases y horarios
+4. Comience a registrar la asistencia diaria
+
+## Soporte y Contacto
+
+Si necesita ayuda o tiene preguntas:
+
+- Consulte la [documentación completa](docs/)
+- Abra un [issue en GitHub](https://github.com/tu-usuario/gymmanager/issues)
+- Contacte al desarrollador: [tu-email@example.com](mailto:tu-email@example.com)
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT - vea el archivo [LICENSE](LICENSE) para más detalles. 

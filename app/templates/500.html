@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - Error del servidor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8 text-center">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <h1 class="display-1 text-danger">500</h1>
+                        <h2 class="mb-4">Error del servidor</h2>
+                        <p class="lead mb-4">Lo sentimos, ha ocurrido un error en el servidor. Estamos trabajando para resolverlo.</p>
+                        <div class="mb-4">
+                            <img src="{{ url_for('static', filename='img/error-500.svg') }}" alt="Error 500" class="img-fluid" style="max-height: 250px;">
+                        </div>
+                        <div>
+                            <a href="{{ url_for('index') }}" class="btn btn-primary">Volver al inicio</a>
+                            <button class="btn btn-outline-secondary" onclick="history.back()">Volver atrás</button>
+                            <button class="btn btn-outline-info" onclick="location.reload()">Reintentar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if error_details and debug %}
+                <div class="card mt-4 shadow">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Detalles del error (Solo para desarrollo)</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre class="text-start" style="max-height: 300px; overflow-y: auto;">{{ error_details }}</pre>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

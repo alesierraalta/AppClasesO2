@@ -1,142 +1,84 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymManager - Sistema de Gestión para Gimnasios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">GymManager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('index') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Panel</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-{% block title %}Inicio - Sistema de Gestión de Clases{% endblock %}
-{% block nav_title %}Inicio{% endblock %}
+    <div class="container mt-4">
+        <div class="jumbotron">
+            <h1 class="display-4">Bienvenido a GymManager</h1>
+            <p class="lead">Sistema de gestión para gimnasios y academias de fitness</p>
+            <hr class="my-4">
+            <p>Controla horarios, asistencia de profesores, clases y más.</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}" role="button">Iniciar Sesión</a>
+            </p>
+        </div>
 
-{% block content %}
-<div class="container py-3">
-    <!-- Header/Bienvenida -->
-    <div class="ios-card p-4 mb-4">
-        <h1 class="ios-title">Bienvenido al Sistema</h1>
-        <p class="ios-subtitle">Administra profesores, horarios y asistencias de manera eficiente</p>
-    </div>
-
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="ios-card">
-                <div class="ios-card-header">
-                    <h4 class="mb-0 fw-semibold"><i class="fas fa-calendar-day me-2 text-primary"></i>Clases programadas para hoy - {{ hoy.strftime('%d/%m/%Y') }}</h4>
-                </div>
-                <div class="ios-card-body">
-                    {% if horarios_hoy %}
-                    <div class="table-responsive">
-                        <table class="table ios-table">
-                            <thead>
-                                <tr>
-                                    <th>Clase</th>
-                                    <th>Horario</th>
-                                    <th>Profesor</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for horario in horarios_hoy %}
-                                <tr>
-                                    <td>{{ horario.nombre }}</td>
-                                    <td>{{ horario.hora_inicio.strftime('%H:%M') }} - {{ horario.hora_fin_str() }}</td>
-                                    <td>{{ horario.profesor.nombre }} {{ horario.profesor.apellido }}</td>
-                                    <td>
-                                        {% if horario.id in clases_realizadas_hoy and clases_realizadas_hoy[horario.id] %}
-                                            {% set clase = clases_realizadas_hoy[horario.id] %}
-                                            {% if clase.hora_llegada_profesor %}
-                                                <span class="badge {% if clase.puntualidad() == 'Puntual' %}bg-success{% elif clase.puntualidad() == 'Retraso leve' %}bg-warning{% else %}bg-danger{% endif %}">
-                                                    {{ clase.puntualidad() }} ({{ clase.cantidad_alumnos }} alumnos)
-                                                </span>
-                                            {% else %}
-                                                <span class="badge bg-primary">Registrada ({{ clase.cantidad_alumnos }} alumnos)</span>
-                                            {% endif %}
-                                        {% else %}
-                                            <span class="badge bg-secondary">Pendiente</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if horario.id in clases_realizadas_hoy and clases_realizadas_hoy[horario.id] %}
-                                            {% set clase = clases_realizadas_hoy[horario.id] %}
-                                            <a href="{{ url_for('editar_asistencia', id=clase.id) }}" class="ios-button ios-button-warning">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </a>
-                                        {% else %}
-                                            <a href="{{ url_for('registrar_asistencia', horario_id=horario.id) }}" class="ios-button">
-                                                <i class="fas fa-clipboard-check"></i> Registrar
-                                            </a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Control de Asistencia</h5>
+                        <p class="card-text">Registra la asistencia de profesores y alumnos a las clases programadas.</p>
                     </div>
-                    {% else %}
-                    <div class="alert alert-info ios-card p-3" role="alert">
-                        <i class="fas fa-info-circle me-2"></i> No hay clases programadas para hoy.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Horarios</h5>
+                        <p class="card-text">Administra los horarios de clases, profesores y salas.</p>
                     </div>
-                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Informes y Estadísticas</h5>
+                        <p class="card-text">Genera informes detallados sobre la operación del gimnasio.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Accesos rápidos -->
-    <div class="row g-3">
-        <div class="col-md-4">
-            <div class="ios-card h-100">
-                <div class="ios-card-body text-center py-4">
-                    <i class="fas fa-chalkboard-teacher fa-3x mb-3 text-primary"></i>
-                    <h5 class="card-title fw-semibold">Gestión de Profesores</h5>
-                    <p class="card-text text-muted">Registra nuevos profesores, asigna tarifas personalizadas y administra su información.</p>
-                    <a href="{{ url_for('listar_profesores') }}" class="ios-button">Gestionar Profesores</a>
-                </div>
-            </div>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">GymManager &copy; {{ now.year }}. Todos los derechos reservados.</span>
         </div>
-        
-        <div class="col-md-4">
-            <div class="ios-card h-100">
-                <div class="ios-card-body text-center py-4">
-                    <i class="fas fa-calendar-alt fa-3x mb-3 text-success"></i>
-                    <h5 class="card-title fw-semibold">Horarios de Clases</h5>
-                    <p class="card-text text-muted">Programa clases semanales, asignando profesores, horarios y capacidad.</p>
-                    <a href="{{ url_for('listar_horarios') }}" class="ios-button ios-button-success">Gestionar Horarios</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="ios-card h-100">
-                <div class="ios-card-body text-center py-4">
-                    <i class="fas fa-clipboard-check fa-3x mb-3 text-info"></i>
-                    <h5 class="card-title fw-semibold">Control de Asistencia</h5>
-                    <p class="card-text text-muted">Registra la asistencia diaria, horas de llegada de profesores y cantidad de alumnos.</p>
-                    <a href="{{ url_for('control_asistencia') }}" class="ios-button">Control de Asistencia</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row mt-4 g-3">
-        <div class="col-md-6">
-            <div class="ios-card h-100">
-                <div class="ios-card-header">
-                    <h4 class="mb-0 fw-semibold"><i class="fas fa-file-excel me-2 text-success"></i>Importar Datos</h4>
-                </div>
-                <div class="ios-card-body text-center py-4">
-                    <p class="card-text">Importe datos históricos de asistencia desde archivos Excel. Seleccione el tipo de clase (MOVE, RIDE, BOX) durante la importación.</p>
-                    <a href="{{ url_for('importar_excel') }}" class="ios-button">Importar Asistencia</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="ios-card h-100">
-                <div class="ios-card-header">
-                    <h4 class="mb-0 fw-semibold"><i class="fas fa-chart-bar me-2 text-danger"></i>Informes</h4>
-                </div>
-                <div class="ios-card-body text-center py-4">
-                    <p class="card-text">Genere informes detallados para visualizar y analizar datos de asistencia y desempeño.</p>
-                    <a href="{{ url_for('informes') }}" class="ios-button ios-button-danger">Personalizar Informes</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

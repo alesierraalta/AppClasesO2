@@ -1,0 +1,16 @@
+{
+    "database": {
+        "type": "sqlite",
+        "path": "C:\\Users\\alesierraalta\\Documents\\python\\appClases\\database\\gymmanager.db"
+    },
+    "server": {
+        "host": "0.0.0.0",
+        "port": 5000,
+        "debug": false
+    },
+    "app": {
+        "secret_key": "8a58720eaef97e5d9d940e8d5438b81dfe9d86e5756ab492",
+        "max_upload_size": 16777216,
+        "timezone": "America/Caracas"
+    }
+}
