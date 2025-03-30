@@ -36,6 +36,12 @@ Para actualizar una instalación existente:
 
 - [Script de actualización](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/actualizar_desde_github.bat)
 
+### Solución de Problemas
+
+Si encuentra errores al iniciar la aplicación:
+
+- [Solucionador de dependencias](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/solucionar_dependencias.bat) - Corrige problemas comunes como el error "cannot import name 'url_decode'"
+
 ## Instalación Manual
 
 1. Clonar el repositorio:
