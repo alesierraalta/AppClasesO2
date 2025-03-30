@@ -11,29 +11,59 @@ Sistema de gestión integral para gimnasios, con funcionalidades de audio y noti
 - Sincronización entre múltiples equipos
 - Soporte multiplataforma (Windows y Mac)
 
-## Requisitos
-
-- Python 3.8+
-- Base de datos SQLite
-- Dependencias adicionales (ver `requirements.txt`)
-
 ## Instalación
 
-### Windows
+### Instalación Rápida en Windows
 
-```
-scripts\windows\instalar_gymmanager.bat
-```
+Para instalar directamente desde GitHub:
 
-### Mac
+1. [Descargar el instalador](https://github.com/alesierraalta/AppClasesO2/raw/main/scripts/windows/instalar_desde_github.bat)
+2. Ejecutar `instalar_desde_github.bat` como administrador
+3. Seguir las instrucciones en pantalla
 
-```
-./scripts/mac/setup_mac.sh
-```
+Este instalador configurará automáticamente:
+- Python (si no está instalado)
+- Todas las dependencias necesarias
+- La configuración de red para sincronización
+- Accesos directos en el escritorio
+
+### Actualizaciones
+
+Para actualizar a la versión más reciente:
+
+1. [Descargar el actualizador](https://github.com/alesierraalta/AppClasesO2/raw/main/scripts/windows/actualizar_desde_github.bat)
+2. Ejecutar `actualizar_desde_github.bat` como administrador
+3. Seguir las instrucciones en pantalla
+
+El proceso de actualización preserva todos los datos existentes y configuraciones personalizadas.
 
 ## Estructura del Proyecto
 
 Consulte [ESTRUCTURA.md](ESTRUCTURA.md) para una explicación detallada de la organización del código.
+
+## Desarrollo en Mac
+
+Para desarrollar GymManager en un entorno Mac:
+
+1. Clonar el repositorio:
+   ```
+   git clone https://github.com/alesierraalta/AppClasesO2.git GymManager
+   cd GymManager
+   ```
+
+2. Configurar entorno virtual:
+   ```
+   python -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+3. Ejecutar en modo desarrollo:
+   ```
+   python main.py --debug
+   ```
+
+Para más detalles sobre el flujo de desarrollo, consulte [DESARROLLO_MAC.md](docs/DESARROLLO_MAC.md).
 
 ## Uso
 
@@ -43,20 +73,14 @@ Ejecute desde la raíz del proyecto:
 python main.py
 ```
 
-O utilice los scripts específicos de cada plataforma en `scripts/windows` o `scripts/mac`.
+O utilice los accesos directos creados en el escritorio:
+- `GymManager` - Inicia la aplicación
+- `Administrar GymManager` - Herramientas de administración
 
 ## Sincronización entre Equipos
 
 Este sistema cuenta con funcionalidad para sincronizar datos entre múltiples computadoras. 
 Para más información, consulte [README_SYNC.md](docs/README_SYNC.md).
-
-## Desarrollo
-
-Para modificar el código:
-
-1. Clone el repositorio
-2. Instale las dependencias: `pip install -r requirements.txt`
-3. Ejecute la aplicación en modo desarrollo: `python main.py --debug`
 
 ## Soporte
 
