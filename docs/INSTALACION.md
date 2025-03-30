@@ -2,6 +2,14 @@
 
 Esta guía proporciona diferentes métodos para instalar GymManager según tus necesidades.
 
+## Requisitos de Python
+
+GymManager es compatible con las siguientes versiones de Python:
+- **Recomendado**: Python 3.8, 3.9 o 3.10
+- **Compatible**: Python 3.7 hasta 3.13
+
+Si encuentras problemas de compatibilidad, recomendamos usar Python 3.10 que tiene la mejor compatibilidad con todas las dependencias.
+
 ## Método 1: Instalación Automática (recomendado)
 
 Este método es el más sencillo y requiere solo Python instalado previamente.
@@ -21,7 +29,7 @@ El script realizará automáticamente:
 Si prefieres controlar cada paso del proceso, sigue estas instrucciones:
 
 1. **Instala Python (si no lo tienes):**
-   - Descarga Python desde [python.org](https://www.python.org/downloads/) (versión 3.8 o superior)
+   - Descarga Python desde [python.org](https://www.python.org/downloads/) (versión 3.8 o 3.10 recomendada)
    - Durante la instalación, marca la opción "Add Python to PATH"
 
 2. **Descarga el código fuente:**
@@ -68,7 +76,7 @@ Para más detalles sobre la configuración multi-PC, consulta [Configuración Mu
 ## Requisitos de Sistema
 
 - **Sistema Operativo:** Windows 7, 8, 10 o 11
-- **Python:** Versión 3.8 o superior
+- **Python:** Versión 3.8 o 3.10 recomendada (compatible con 3.7 hasta 3.13)
 - **Espacio en disco:** Mínimo 500 MB
 - **Memoria RAM:** Mínimo 4 GB recomendado
 - **Conectividad:** Conexión a Internet para la instalación
@@ -84,9 +92,18 @@ Si ves el mensaje "No se encontró Python", debes instalar Python:
 
 ### Error al instalar dependencias
 Si ves errores relacionados con la instalación de dependencias:
-1. Verifica tu conexión a Internet
+1. Verifica que estás usando una versión compatible de Python (3.8 o 3.10 recomendada)
 2. Ejecuta el siguiente comando: `python -m pip install --upgrade pip`
-3. Intenta instalar manualmente las dependencias: `pip install flask sqlalchemy`
+3. Prueba instalar las dependencias manualmente:
+   ```
+   pip install Flask==2.3.3 Flask-SQLAlchemy==3.1.1 Flask-WTF==1.2.1
+   pip install python-dotenv==1.0.0 pyinstaller
+   ```
+
+### Problemas específicos con Python 3.13
+Si estás usando Python 3.13 y encuentras problemas de compatibilidad:
+1. Instala una versión más estable como Python 3.10
+2. O modifica manualmente el archivo requirements.txt para actualizar las versiones
 
 ### Problemas de sincronización entre PCs
 Si tienes problemas con la sincronización entre equipos:
