@@ -1,6 +1,61 @@
 # GymManager
 
-Sistema de gestión integral para gimnasios, con funcionalidades de audio y notificaciones.
+Sistema de gestión para gimnasios con múltiples funciones y soporte para redes locales.
+
+## Instalación Local (recomendado)
+
+Para instalar GymManager desde los archivos locales del repositorio, siga estos pasos:
+
+1. Descargue o clone este repositorio en su ordenador
+2. Ejecute como administrador el archivo: `scripts/windows/instalar_local.bat`
+3. Siga las instrucciones en pantalla para completar la instalación
+
+El instalador local no descarga nada desde Internet, utiliza los archivos que ya ha descargado.
+
+## Actualización Local (recomendado)
+
+Para actualizar GymManager desde los archivos locales del repositorio:
+
+1. Descargue o clone la versión más reciente del repositorio
+2. Ejecute como administrador el archivo: `scripts/windows/actualizar_local.bat` 
+3. Siga las instrucciones en pantalla para completar la actualización
+
+El actualizador local no descarga nada desde Internet, utiliza los archivos que ya ha descargado.
+
+## Instalación desde GitHub (alternativa)
+
+Si prefiere que el instalador descargue automáticamente el código desde GitHub:
+
+1. Descargue únicamente el archivo: `scripts/windows/instalar_desde_github.bat`
+2. Ejecute como administrador dicho archivo
+3. Siga las instrucciones en pantalla
+
+## Actualización desde GitHub (alternativa)
+
+Si prefiere que el actualizador descargue automáticamente el código desde GitHub:
+
+1. Descargue únicamente el archivo: `scripts/windows/actualizar_desde_github.bat`
+2. Ejecute como administrador dicho archivo
+3. Siga las instrucciones en pantalla
+
+## Requisitos
+
+- Windows 7/8/10/11
+- Permisos de administrador para la instalación
+- Python 3.8 o superior (se instala automáticamente)
+- Conexión a Internet (solo para actualizar dependencias)
+
+## Funcionalidades
+
+- Gestión de miembros y clases
+- Control de pagos y asistencias
+- Sincronización entre múltiples ordenadores
+- Copias de seguridad automáticas
+- Informes y estadísticas
+
+## Soporte
+
+Para soporte técnico, contacte con el desarrollador.
 
 ## Características Principales
 
@@ -10,32 +65,6 @@ Sistema de gestión integral para gimnasios, con funcionalidades de audio y noti
 - Procesamiento de audio para anuncios
 - Sincronización entre múltiples equipos
 - Soporte multiplataforma (Windows y Mac)
-
-## Instalación
-
-### Instalación Rápida en Windows
-
-Para instalar directamente desde GitHub:
-
-1. **[➡️ DESCARGAR INSTALADOR](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/instalar_desde_github.bat)** - *Haga clic derecho y seleccione "Guardar enlace como..."*
-2. Ejecutar `instalar_desde_github.bat` como administrador
-3. Seguir las instrucciones en pantalla
-
-Este instalador configurará automáticamente:
-- Python (si no está instalado)
-- Todas las dependencias necesarias
-- La configuración de red para sincronización
-- Accesos directos en el escritorio
-
-### Actualizaciones
-
-Para actualizar a la versión más reciente:
-
-1. **[➡️ DESCARGAR ACTUALIZADOR](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/actualizar_desde_github.bat)** - *Haga clic derecho y seleccione "Guardar enlace como..."*
-2. Ejecutar `actualizar_desde_github.bat` como administrador
-3. Seguir las instrucciones en pantalla
-
-El proceso de actualización preserva todos los datos existentes y configuraciones personalizadas.
 
 ## Estructura del Proyecto
 
@@ -80,9 +109,4 @@ O utilice los accesos directos creados en el escritorio:
 ## Sincronización entre Equipos
 
 Este sistema cuenta con funcionalidad para sincronizar datos entre múltiples computadoras. 
-Para más información, consulte [README_SYNC.md](docs/README_SYNC.md).
-
-## Soporte
-
-Para problemas conocidos o asistencia, revise la documentación en el directorio `docs/` o
-contacte al administrador del sistema. 
+Para más información, consulte [README_SYNC.md](docs/README_SYNC.md). 
