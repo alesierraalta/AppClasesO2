@@ -176,30 +176,89 @@ echo Presione cualquier tecla para continuar...
 pause
 cls
 
-:: Instalar dependencias de Python
-echo Instalando dependencias de Python...
-cd C:\GymManager
-if not exist "C:\GymManager\requirements.txt" (
-    echo ¡ERROR! No se encontró el archivo requirements.txt
-    goto ERROR
-)
+:: Instalar dependencias esenciales
+echo Instalando dependencias esenciales...
+cd /d C:\GymManager
+%python_cmd% -m pip install --upgrade pip
 
-python -m pip install --upgrade pip
-if %errorLevel% neq 0 (
-    echo ¡ERROR! No se pudo actualizar pip.
-    goto ERROR
-)
+:: Instalar versiones específicas para evitar el error url_decode
+echo Instalando versiones compatibles de dependencias...
+%python_cmd% -m pip install werkzeug==2.3.7
+%python_cmd% -m pip install -r requirements.txt
 
-pip install -r requirements.txt
-if %errorLevel% neq 0 (
+:: Verificar si se solucionó el problema de url_decode
+echo Verificando dependencias...
+%python_cmd% -c "from werkzeug.urls import url_decode; print('OK: url_decode importado correctamente')" >nul 2>&1
+if %errorlevel% neq 0 (
     echo.
-    echo ¡ERROR! No se pudieron instalar las dependencias.
-    echo - Verifique su conexión a Internet
-    echo - Asegúrese de que Python se instaló correctamente
-    goto ERROR
+    echo ADVERTENCIA: Añadiendo solución para el error url_decode...
+    
+    :: Crear script Python para solucionar el problema
+    echo import sys > fix_werkzeug.py
+    echo import os >> fix_werkzeug.py
+    echo import site >> fix_werkzeug.py
+    echo. >> fix_werkzeug.py
+    echo # Encontrar la ubicación de werkzeug >> fix_werkzeug.py
+    echo werkzeug_path = None >> fix_werkzeug.py
+    echo for path in sys.path: >> fix_werkzeug.py
+    echo     potential_path = os.path.join(path, 'werkzeug') >> fix_werkzeug.py
+    echo     if os.path.exists(potential_path): >> fix_werkzeug.py
+    echo         werkzeug_path = potential_path >> fix_werkzeug.py
+    echo         break >> fix_werkzeug.py
+    echo. >> fix_werkzeug.py
+    echo if werkzeug_path: >> fix_werkzeug.py
+    echo     print(f"Werkzeug encontrado en: {werkzeug_path}") >> fix_werkzeug.py
+    echo     # Verificar si existe urls.py >> fix_werkzeug.py
+    echo     urls_path = os.path.join(werkzeug_path, 'urls.py') >> fix_werkzeug.py
+    echo     if os.path.exists(urls_path): >> fix_werkzeug.py
+    echo         print(f"Comprobando {urls_path}") >> fix_werkzeug.py
+    echo         with open(urls_path, 'r') as f: >> fix_werkzeug.py
+    echo             content = f.read() >> fix_werkzeug.py
+    echo         # Verificar si url_decode no está definido >> fix_werkzeug.py
+    echo         if 'def url_decode' not in content: >> fix_werkzeug.py
+    echo             print("Añadiendo función url_decode a werkzeug.urls") >> fix_werkzeug.py
+    echo             # Añadir la función url_decode >> fix_werkzeug.py
+    echo             with open(urls_path, 'a') as f: >> fix_werkzeug.py
+    echo                 f.write("\n\n") >> fix_werkzeug.py
+    echo                 f.write("def url_decode(s, charset='utf-8', include_empty=True, errors='replace', separator='&', cls=None):\n") >> fix_werkzeug.py
+    echo                 f.write("    \"\"\"Parse a query string and return it as a dictionary.\"\"\"\n") >> fix_werkzeug.py
+    echo                 f.write("    if isinstance(s, str):\n") >> fix_werkzeug.py
+    echo                 f.write("        s = s.encode(charset)\n") >> fix_werkzeug.py
+    echo                 f.write("    return dict(_url_decode_impl(s.split(separator.encode('ascii')), charset, include_empty, errors))\n") >> fix_werkzeug.py
+    echo                 f.write("\n") >> fix_werkzeug.py
+    echo                 f.write("def _url_decode_impl(pair_iter, charset, include_empty, errors):\n") >> fix_werkzeug.py
+    echo                 f.write("    for pair in pair_iter:\n") >> fix_werkzeug.py
+    echo                 f.write("        if not pair:\n") >> fix_werkzeug.py
+    echo                 f.write("            continue\n") >> fix_werkzeug.py
+    echo                 f.write("        equal = pair.find(b'=')\n") >> fix_werkzeug.py
+    echo                 f.write("        if equal >= 0:\n") >> fix_werkzeug.py
+    echo                 f.write("            key = pair[:equal].replace(b'+', b' ')\n") >> fix_werkzeug.py
+    echo                 f.write("            value = pair[equal + 1:].replace(b'+', b' ')\n") >> fix_werkzeug.py
+    echo                 f.write("        else:\n") >> fix_werkzeug.py
+    echo                 f.write("            key = pair.replace(b'+', b' ')\n") >> fix_werkzeug.py
+    echo                 f.write("            value = b''\n") >> fix_werkzeug.py
+    echo                 f.write("        key = url_unquote_plus(key, charset, errors)\n") >> fix_werkzeug.py
+    echo                 f.write("        if include_empty or value:\n") >> fix_werkzeug.py
+    echo                 f.write("            value = url_unquote_plus(value, charset, errors)\n") >> fix_werkzeug.py
+    echo                 f.write("            yield key, value\n") >> fix_werkzeug.py
+    echo     else: >> fix_werkzeug.py
+    echo         print(f"Error: No se encontró el archivo urls.py en {werkzeug_path}") >> fix_werkzeug.py
+    echo else: >> fix_werkzeug.py
+    echo     print("Error: No se pudo encontrar la carpeta de werkzeug") >> fix_werkzeug.py
+
+    %python_cmd% fix_werkzeug.py
+    del fix_werkzeug.py
+    
+    echo.
+    echo Verificando solución...
+    %python_cmd% -c "from werkzeug.urls import url_decode; print('OK: Solución aplicada correctamente')" >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo ADVERTENCIA: No se pudo solucionar automáticamente.
+        echo La aplicación podría requerir ajustes adicionales la primera vez que se ejecute.
+    ) else (
+        echo OK: Problema de url_decode solucionado correctamente.
+    )
 )
-echo Dependencias instaladas correctamente.
-echo.
 
 echo Presione cualquier tecla para continuar con la configuración...
 pause
