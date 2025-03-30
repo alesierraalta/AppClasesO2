@@ -88,6 +88,7 @@ python app/core/app.py
 Para obtener más información, consulte:
 
 - [Guía de instalación detallada](docs/INSTALACION.md)
+- [Solución de problemas comunes](docs/SOLUCION_ERRORES.md)
 - [Configuración para múltiples PCs](docs/README_MULTIPC.md)
 - [Guía para Mac](docs/README_MAC.md)
 
