@@ -1,0 +1,11 @@
+{
+    "sync_interval": 300,
+    "is_primary_server": false,
+    "sync_servers": [
+        "http://192.168.1.100:5000/sync",
+        "http://192.168.1.101:5000/sync",
+        "http://192.168.1.102:5000/sync"
+    ],
+    "server_name": "Recepción 1",
+    "backup_folder": "backups"
+} 
