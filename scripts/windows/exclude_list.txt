@@ -1,0 +1,8 @@
+database\gimnasio.db
+app\core\pc_config.json
+app\core\network_config.json
+app\core\sync_config.json
+app\core\.env
+app\uploads\*
+logs\*
+Backups\* 
