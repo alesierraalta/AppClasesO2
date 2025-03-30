@@ -84,15 +84,29 @@ cls
 :: Descargar la versión más reciente desde GitHub
 echo Descargando la última versión desde GitHub...
 echo Este proceso puede tardar varios minutos dependiendo de su conexión.
->nul 2>nul powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -Uri 'https://github.com/alesierraalta/AppClasesO2/archive/refs/heads/main.zip' -OutFile 'C:\GymManager\Temp\GymManager.zip' } catch { exit 1 } }"
+
+:: Usar métodos alternativos para la descarga para evitar bloqueos de antivirus
+>nul 2>nul powershell -Command "& {try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $webClient = New-Object System.Net.WebClient; $webClient.Headers.Add('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'); $webClient.DownloadFile('https://github.com/alesierraalta/AppClasesO2/archive/refs/heads/main.zip', 'C:\GymManager\Temp\GymManager.zip') } catch { try { Start-BitsTransfer -Source 'https://github.com/alesierraalta/AppClasesO2/archive/refs/heads/main.zip' -Destination 'C:\GymManager\Temp\GymManager.zip' } catch { exit 1 } } }"
 
 if %errorLevel% neq 0 (
     echo.
     echo ¡ERROR! No se pudo descargar GymManager.
-    echo - Verifique su conexión a Internet
-    echo - Compruebe que puede acceder a GitHub
-    echo - Intente de nuevo más tarde
-    goto ERROR
+    echo - Intentando método alternativo de descarga...
+    
+    >nul 2>nul powershell -Command "& {try { $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri 'https://github.com/alesierraalta/AppClasesO2/archive/refs/heads/main.zip' -OutFile 'C:\GymManager\Temp\GymManager.zip' -UseBasicParsing } catch { exit 1 } }"
+    
+    if %errorLevel% neq 0 (
+        echo.
+        echo ¡ERROR! No se pudo descargar GymManager.
+        echo - Verifique su conexión a Internet
+        echo - Si tiene acceso a un navegador, descargue manualmente los archivos desde:
+        echo   https://github.com/alesierraalta/AppClasesO2/archive/refs/heads/main.zip
+        echo - Coloque el archivo descargado en C:\GymManager\Temp\GymManager.zip
+        echo - Luego reinicie este actualizador
+        goto ERROR
+    ) else {
+        echo Descarga completada mediante método alternativo.
+    }
 )
 echo Descarga completada correctamente.
 echo.
@@ -246,7 +260,11 @@ echo.
 echo Intente los siguientes pasos:
 echo 1. Asegúrese de tener conexión a Internet estable
 echo 2. Ejecute el actualizador como administrador
-echo 3. Si el problema persiste, contacte al soporte técnico
+echo 3. Si el antivirus bloquea la actualización, pruebe estas alternativas:
+echo    - Añada C:\GymManager a las exclusiones del antivirus
+echo    - Descargue manualmente los archivos desde https://github.com/alesierraalta/AppClasesO2
+echo    - Use la opción de actualización offline (si está disponible)
+echo 4. Si el problema persiste, contacte al soporte técnico
 echo.
 echo Presione cualquier tecla para salir...
 pause
