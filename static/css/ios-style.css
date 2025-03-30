@@ -1,0 +1,359 @@
+/* 
+ * iOS Style CSS - Estilos simplificados para visualización básica en móvil
+ */
+
+:root {
+  /* Colores iOS */
+  --ios-bg-color: #F2F2F7;
+  --ios-card-bg: #FFFFFF;
+  --ios-primary: #007AFF;
+  --ios-success: #34C759;
+  --ios-danger: #FF3B30;
+  --ios-warning: #FF9500;
+  --ios-gray: #8E8E93;
+  --ios-light-gray: #E5E5EA;
+  --ios-dark-gray: #636366;
+  --ios-border: rgba(0, 0, 0, 0.1);
+  --ios-shadow: rgba(0, 0, 0, 0.05);
+  
+  /* Dimensiones básicas */
+  --ios-radius: 8px;
+  --ios-header-height: 48px;
+  --ios-tab-height: 49px;
+}
+
+/* ====================== SOLUCIÓN PARA ERRORES JAVASCRIPT ====================== */
+
+/* Elemento fantasma para getBoundingClientRect */
+#boundingRectElement {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  visibility: hidden;
+  pointer-events: none;
+  display: block !important;
+}
+
+/* Evitar errores con elementos null */
+body::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -9999px;
+  height: 1px;
+  width: 1px;
+}
+
+/* Evitar problemas de iframe sandbox */
+iframe {
+  border: 0;
+}
+
+/* ====================== ESTILOS MINIMALISTAS ESENCIALES ====================== */
+
+@media (max-width: 768px) {
+  /* Fix de emergencia para errores JavaScript */
+  :root::before {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 1px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -9999;
+  }
+  
+  /* Script para corregir getBoundingClientRect */
+  body.ios-style::after {
+    content: "";
+    visibility: hidden;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    display: block !important;
+  }
+  
+  /* Corregir errores de iframe */
+  body.ios-style iframe {
+    border: 0;
+    transform: translateZ(0);
+  }
+  
+  /* RESET BÁSICO - Eliminar todos los estilos decorativos */
+  body.ios-style {
+    background-color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 10px;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* ASEGURAR VISIBILIDAD DE ELEMENTOS CRÍTICOS */
+  body.ios-style * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  /* VISUALIZACIÓN BÁSICA DE TABLAS */
+  body.ios-style table,
+  body.ios-style .table {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 1rem !important;
+    border-collapse: collapse !important;
+    font-size: 14px !important;
+  }
+  
+  body.ios-style .table-responsive {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  body.ios-style th,
+  body.ios-style td {
+    padding: 8px !important;
+    vertical-align: top !important;
+    border-top: 1px solid #dee2e6 !important;
+    white-space: nowrap !important;
+  }
+  
+  body.ios-style th {
+    font-weight: bold !important;
+    background-color: #f8f9fa !important;
+    white-space: nowrap !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1 !important;
+  }
+  
+  /* VISUALIZACIÓN DE INFORMES Y RESÚMENES */
+  body.ios-style #resumenGeneral,
+  body.ios-style .resumen-general,
+  body.ios-style [id*="resumen"],
+  body.ios-style [id*="informe"],
+  body.ios-style [id*="reporte"] {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+    padding: 0 !important;
+  }
+  
+  /* BORRAR ESTILOS DE TARJETAS */
+  body.ios-style .card,
+  body.ios-style .ios-card {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin-bottom: 1rem !important;
+    background: transparent !important;
+  }
+  
+  body.ios-style .card-body,
+  body.ios-style .ios-card-body {
+    padding: 0 !important;
+  }
+  
+  /* SOPORTE PARA FILAS EXPANDIBLES */
+  body.ios-style tr.clases-detalle,
+  body.ios-style tr.detail-row,
+  body.ios-style tr[id*="detalle"] {
+    display: none !important;
+  }
+  
+  body.ios-style tr.clases-detalle.show,
+  body.ios-style tr.detail-row.show,
+  body.ios-style tr[id*="detalle"].show {
+    display: table-row !important;
+  }
+  
+  /* BOTONES SIMPLIFICADOS */
+  body.ios-style .btn,
+  body.ios-style button {
+    display: inline-block !important;
+    padding: 6px 12px !important;
+    margin: 0 !important;
+    border: 1px solid transparent !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    cursor: pointer !important;
+  }
+  
+  body.ios-style .btn-primary {
+    background-color: #007bff !important;
+    color: white !important;
+  }
+  
+  /* BOTONES DE EXPANDIR/CONTRAER */
+  body.ios-style [id*="btnMostrar"],
+  body.ios-style [id*="btnOcultar"],
+  body.ios-style .toggle-clases,
+  body.ios-style .detail-toggle {
+    display: inline-block !important;
+    padding: 4px 8px !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    background-color: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+  }
+  
+  /* PARA ELEMENTOS COLAPSABLES */
+  body.ios-style .collapse {
+    display: none !important;
+  }
+  
+  body.ios-style .collapse.show {
+    display: block !important;
+  }
+  
+  /* NAVEGACIÓN POR PESTAÑAS */
+  body.ios-style .nav-tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    margin-bottom: 1rem !important;
+    padding-bottom: 0 !important;
+  }
+  
+  body.ios-style .nav-tabs .nav-item {
+    margin-right: 2px !important;
+  }
+  
+  body.ios-style .nav-tabs .nav-link {
+    border: 1px solid transparent !important;
+    border-top-left-radius: 4px !important;
+    border-top-right-radius: 4px !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    white-space: nowrap !important;
+  }
+  
+  body.ios-style .nav-tabs .nav-link.active {
+    color: #495057 !important;
+    background-color: #fff !important;
+    border-color: #dee2e6 #dee2e6 #fff !important;
+  }
+  
+  /* FIX PARA GRIDS */
+  body.ios-style .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin-right: -5px !important;
+    margin-left: -5px !important;
+  }
+  
+  body.ios-style [class*="col-"] {
+    position: relative !important;
+    width: 100% !important;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+  }
+  
+  body.ios-style .col-6,
+  body.ios-style .col-md-6,
+  body.ios-style .col-lg-6,
+  body.ios-style .col-xl-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  
+  body.ios-style .col-4,
+  body.ios-style .col-md-4,
+  body.ios-style .col-lg-4,
+  body.ios-style .col-xl-4 {
+    flex: 0 0 33.333333% !important;
+    max-width: 33.333333% !important;
+  }
+  
+  /* SOLUCIÓN PARA EL ERROR JS - MÁS ROBUSTO */
+  body.ios-style .table,
+  body.ios-style .table-responsive,
+  body.ios-style [id*="tabla"],
+  body.ios-style [id*="table"] {
+    transform: translateZ(0) !important;
+    will-change: transform !important;
+    min-height: 1px !important;
+    min-width: 1px !important;
+    position: relative !important;
+  }
+  
+  /* OCULTAR ELEMENTOS ESTILIZADOS */
+  body.ios-style .ios-list,
+  body.ios-style .ios-teacher-row,
+  body.ios-style .ios-card,
+  body.ios-style .ios-summary-card,
+  body.ios-style .ios-grid,
+  body.ios-style .ios-filter-bar,
+  body.ios-style .ios-segmented,
+  body.ios-style .ios-chips-container,
+  body.ios-style .ios-action-circle,
+  body.ios-style .ios-swipe-actions,
+  body.ios-style .swipe-container {
+    display: none !important;
+  }
+  
+  /* FORMULARIOS BÁSICOS */
+  body.ios-style .form-control,
+  body.ios-style input,
+  body.ios-style select,
+  body.ios-style textarea {
+    width: 100% !important;
+    padding: 8px !important;
+    margin-bottom: 10px !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+  }
+  
+  body.ios-style label {
+    display: inline-block !important;
+    margin-bottom: 5px !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+  }
+  
+  /* CONTENIDO PRINCIPAL */
+  body.ios-style .container,
+  body.ios-style .container-fluid {
+    width: 100% !important;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+  
+  /* Fix para línea específica 169 en index que causa el error getBoundingClientRect */
+  body.ios-style *[data-toggle="tooltip"],
+  body.ios-style *[data-bs-toggle="tooltip"],
+  body.ios-style .tooltip-trigger,
+  body.ios-style [data-target],
+  body.ios-style [data-bs-target] {
+    transform: translateZ(0) !important;
+    position: relative !important;
+    display: inline-block !important;
+  }
+  
+  /* Fix para iframes en sandboxing */
+  body.ios-style iframe[sandbox] {
+    border: 0 !important;
+    pointer-events: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

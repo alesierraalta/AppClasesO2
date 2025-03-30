@@ -1779,71 +1779,84 @@ def audio_get(horario_id):
     try:
         app.logger.info(f"Audio get request received for horario_id: {horario_id}")
         
-        clase = ClaseRealizada.query.filter_by(horario_id=horario_id).order_by(ClaseRealizada.id.desc()).first()
+        # First, check if there's an audio file in the new structure (permanent directory)
+        audio_dir = get_audio_storage_path(horario_id)
+        audio_path = None
         
-        if not clase:
-            app.logger.warning(f"No clase found for horario_id: {horario_id}")
-            return jsonify({
-                'success': False,
-                'message': 'No clase registrada found for this schedule',
-                'error_code': 'NO_CLASE_FOUND'
-            }), 404
+        if os.path.exists(audio_dir):
+            app.logger.info(f"Checking for audio in directory: {audio_dir}")
+            files = os.listdir(audio_dir)
+            audio_files = [f for f in files if f.startswith('audio_')]
             
-        if not clase.audio_file:
-            app.logger.warning(f"No audio file registered for horario_id: {horario_id}, clase_id: {clase.id}")
-            return jsonify({
-                'success': False,
-                'message': 'No audio file registered for this class',
-                'error_code': 'NO_AUDIO_REGISTERED',
-                'clase_id': clase.id
-            }), 404
+            if audio_files:
+                # Sort to get the most recent file
+                audio_files.sort(reverse=True)
+                newest_audio = audio_files[0]
+                audio_path = os.path.join(audio_dir, newest_audio)
+                app.logger.info(f"Found audio file in permanent directory: {audio_path}")
+                
+                # Now check if we need to update the database record
+                clase = ClaseRealizada.query.filter_by(horario_id=horario_id).order_by(ClaseRealizada.id.desc()).first()
+                if clase:
+                    # Update the audio_file in the database if it's different
+                    relative_path = os.path.join(f'horario_{horario_id}', newest_audio)
+                    if clase.audio_file != relative_path:
+                        try:
+                            clase.audio_file = relative_path
+                            db.session.commit()
+                            app.logger.info(f"Updated database with new audio path: {relative_path}")
+                        except Exception as e:
+                            app.logger.error(f"Error updating database: {str(e)}")
         
-        upload_folder = os.path.join(app.config.get('UPLOAD_FOLDER', 'static/uploads'), 'audios')
-        audio_path = os.path.join(upload_folder, clase.audio_file) if clase.audio_file else None
-        app.logger.info(f"Attempting to serve audio file: {audio_path}")
-        
-        if not os.path.exists(audio_path):
-            app.logger.warning(f"Audio file not found on server: {audio_path}")
+        # If not found in permanent directory, try the database path
+        if not audio_path:
+            clase = ClaseRealizada.query.filter_by(horario_id=horario_id).order_by(ClaseRealizada.id.desc()).first()
             
-            # Intentar buscar el archivo en la nueva estructura
-            try:
-                audio_dir = get_audio_storage_path(horario_id)
-                if os.path.exists(audio_dir):
-                    files = os.listdir(audio_dir)
-                    audio_files = [f for f in files if f.startswith('audio_')]
-                    if audio_files:
-                        # Usar el archivo más reciente
-                        audio_files.sort(reverse=True)
-                        newest_audio = audio_files[0]
-                        audio_path = os.path.join(audio_dir, newest_audio)
-                        app.logger.info(f"Found audio file in new structure: {audio_path}")
-                        
-                        # Actualizar la base de datos con la nueva ruta
-                        relative_path = os.path.join(f'horario_{horario_id}', newest_audio)
-                        clase.audio_file = relative_path
-                        db.session.commit()
-                        app.logger.info(f"Updated database with new audio path: {relative_path}")
-                    else:
-                        app.logger.warning(f"No audio files found in directory: {audio_dir}")
-            except Exception as e:
-                app.logger.error(f"Error searching for audio files: {str(e)}")
-            
-            # Si aún no encontramos el archivo, devolver error
-            if not os.path.exists(audio_path):
+            if not clase:
+                app.logger.warning(f"No clase found for horario_id: {horario_id}")
                 return jsonify({
                     'success': False,
-                    'message': 'Audio file registered but not found on server',
-                    'error_code': 'FILE_NOT_FOUND',
-                    'file_name': clase.audio_file,
+                    'message': 'No clase registrada found for this schedule',
+                    'error_code': 'NO_CLASE_FOUND'
+                }), 404
+                
+            if not clase.audio_file:
+                app.logger.warning(f"No audio file registered for horario_id: {horario_id}, clase_id: {clase.id}")
+                return jsonify({
+                    'success': False,
+                    'message': 'No audio file registered for this class',
+                    'error_code': 'NO_AUDIO_REGISTERED',
                     'clase_id': clase.id
                 }), 404
+            
+            # Try to find the file in various locations
+            upload_folder = app.config.get('UPLOAD_FOLDER', 'static/uploads')
+            
+            # Check if it's using the new format (horario_X/file)
+            if clase.audio_file.startswith('horario_'):
+                audio_path = os.path.join(upload_folder, 'audios', 'permanent', clase.audio_file)
+            else:
+                # Legacy path
+                audio_path = os.path.join(upload_folder, 'audios', clase.audio_file)
+            
+            app.logger.info(f"Looking for audio at path: {audio_path}")
+        
+        # Final check - does the file actually exist?
+        if not os.path.exists(audio_path):
+            app.logger.error(f"Audio file not found on server: {audio_path}")
+            return jsonify({
+                'success': False,
+                'message': 'Audio file not found on server',
+                'error_code': 'FILE_NOT_FOUND',
+                'file_path': audio_path
+            }), 404
         
         # Get file size for logging
         file_size = os.path.getsize(audio_path)
         app.logger.info(f"Serving audio file for horario_id: {horario_id}, size: {file_size/1024:.2f} KB")
         
         # Return the file with the correct MIME type
-        extension = clase.audio_file.rsplit('.', 1)[1].lower() if '.' in clase.audio_file else 'mp3'
+        extension = os.path.splitext(audio_path)[1].lower().lstrip('.')
         mime_types = {
             'mp3': 'audio/mpeg',
             'wav': 'audio/wav',
@@ -1856,6 +1869,8 @@ def audio_get(horario_id):
     except Exception as e:
         error_msg = str(e)
         app.logger.error(f"Error getting audio for horario_id: {horario_id}: {error_msg}")
+        import traceback
+        app.logger.error(traceback.format_exc())
         return jsonify({
             'success': False,
             'has_audio': False,
@@ -1869,9 +1884,7 @@ def audio_check(horario_id):
     try:
         app.logger.info(f"Audio check request for horario_id: {horario_id}")
         
-        clase = ClaseRealizada.query.filter_by(horario_id=horario_id).order_by(ClaseRealizada.id.desc()).first()
-        
-        # Primero, intentemos buscar en la nueva estructura, incluso si no hay registro en la BD
+        # First, check directly in the permanent storage directory
         audio_dir = get_audio_storage_path(horario_id)
         audio_files = []
         newest_audio = None
@@ -1879,133 +1892,105 @@ def audio_check(horario_id):
         
         if os.path.exists(audio_dir):
             try:
+                app.logger.info(f"Checking for audio files in directory: {audio_dir}")
                 files = os.listdir(audio_dir)
                 audio_files = [f for f in files if f.startswith('audio_')]
                 if audio_files:
                     audio_files.sort(reverse=True)
                     newest_audio = audio_files[0]
                     newest_audio_path = os.path.join(audio_dir, newest_audio)
-                    app.logger.info(f"Found audio file in storage: {newest_audio_path}")
-                    
-                    # Actualizar la base de datos con la nueva ruta
-                    relative_path = os.path.join(f'horario_{horario_id}', newest_audio)
+                    app.logger.info(f"Found newest audio file: {newest_audio_path}")
+                else:
+                    app.logger.info(f"No audio files found in directory: {audio_dir}")
+            except Exception as e:
+                app.logger.error(f"Error checking audio directory: {str(e)}")
+        
+        # Then check if there's a database record
+        clase = ClaseRealizada.query.filter_by(horario_id=horario_id).order_by(ClaseRealizada.id.desc()).first()
+        
+        # If we found a file in the permanent directory, make sure the database is updated
+        if newest_audio and clase:
+            relative_path = os.path.join(f'horario_{horario_id}', newest_audio)
+            
+            # Update the database if needed
+            if clase.audio_file != relative_path:
+                try:
                     clase.audio_file = relative_path
                     db.session.commit()
                     app.logger.info(f"Updated database with found audio: {relative_path}")
-                else:
-                    app.logger.warning(f"No audio files found in directory: {audio_dir}")
-            except Exception as e:
-                app.logger.error(f"Error searching for audio files: {str(e)}")
+                except Exception as e:
+                    app.logger.error(f"Error updating database: {str(e)}")
         
-        # Si encontramos un archivo pero no hay registro en la BD o el registro es incorrecto
-        if newest_audio_path and (not clase or not clase.audio_file or not os.path.exists(os.path.join(app.config.get('UPLOAD_FOLDER', 'static/uploads'), 'audios', 'permanent', clase.audio_file))):
-            if clase:
-                # Actualizar la BD con la nueva ruta
-                relative_path = os.path.join(f'horario_{horario_id}', newest_audio)
-                clase.audio_file = relative_path
-                db.session.commit()
-                app.logger.info(f"Updated database with found audio: {relative_path}")
-            elif newest_audio_path:
-                app.logger.warning(f"Found audio file but no clase record for horario_id: {horario_id}")
-                return jsonify({
-                    'success': True,
-                    'has_audio': True,
-                    'exists': True,
-                    'file_name': newest_audio,
-                    'file_path': f"/static/uploads/audios/permanent/horario_{horario_id}/{newest_audio}",
-                    'file_size': os.path.getsize(newest_audio_path),
-                    'file_size_readable': f"{os.path.getsize(newest_audio_path)/1024:.2f} KB",
-                    'clase_id': None,
-                    'fecha': None
-                })
-        
-        # Si no hay registro en la base de datos y no encontramos archivo
-        if not clase and not newest_audio_path:
-            app.logger.info(f"No audio registered for horario_id: {horario_id}")
-            return jsonify({
-                'success': True,
-                'has_audio': False,
-                'message': 'No audio registered'
-            })
-            
-        # Si hay registro pero no tiene audio
-        if clase and not clase.audio_file and not newest_audio_path:
-            app.logger.info(f"No audio registered in database for horario_id: {horario_id}")
-            return jsonify({
-                'success': True,
-                'has_audio': False,
-                'message': 'No audio registered in database'
-            })
-        
-        # Verificar la ruta del audio en la base de datos
-        upload_folder = os.path.join(app.config.get('UPLOAD_FOLDER', 'static/uploads'), 'audios')
-        audio_path = None
-        
-        # Determinar la ruta del audio según el formato almacenado
-        if clase and clase.audio_file:
-            if clase.audio_file.startswith('horario_') or '/' in clase.audio_file or '\\' in clase.audio_file:
-                audio_path = os.path.join(upload_folder, 'permanent', clase.audio_file)
-            else:
-                # Compatibilidad con formato antiguo
-                audio_path = os.path.join(upload_folder, clase.audio_file)
-        elif newest_audio_path:
-            audio_path = newest_audio_path
-        
-        if audio_path and os.path.exists(audio_path):
-            file_size = os.path.getsize(audio_path)
-            app.logger.info(f"Audio file exists for horario_id: {horario_id}, size: {file_size/1024:.2f} KB")
-            
-            # Extraer el nombre del archivo de la ruta
-            file_name = os.path.basename(audio_path)
-            
-            # Determinar la ruta relativa para el frontend
-            if audio_path == newest_audio_path:
-                file_path = f"/static/uploads/audios/permanent/horario_{horario_id}/{file_name}"
-            elif clase and clase.audio_file and clase.audio_file.startswith('horario_'):
-                file_path = f"/static/uploads/audios/permanent/{clase.audio_file}"
-            else:
-                file_path = f"/static/uploads/audios/{file_name}"
+        # If we found audio in the directory, return success with that file
+        if newest_audio_path and os.path.exists(newest_audio_path):
+            file_size = os.path.getsize(newest_audio_path)
+            file_path = f"/static/uploads/audios/permanent/horario_{horario_id}/{newest_audio}"
             
             return jsonify({
                 'success': True,
                 'has_audio': True,
                 'exists': True,
-                'file_name': file_name,
+                'file_name': newest_audio,
                 'file_path': file_path,
                 'file_size': file_size,
                 'file_size_readable': f"{file_size/1024:.2f} KB",
                 'clase_id': clase.id if clase else None,
                 'fecha': clase.fecha.strftime('%Y-%m-%d') if clase and clase.fecha else None
             })
-        else:
-            app.logger.warning(f"Audio file registered but not found on disk for horario_id: {horario_id}")
+        
+        # If no file in directory but we have a database record, check that path
+        if clase and clase.audio_file:
+            app.logger.info(f"Checking database audio path: {clase.audio_file}")
+            upload_folder = app.config.get('UPLOAD_FOLDER', 'static/uploads')
             
-            # Si tenemos un registro en la BD pero el archivo no existe
-            if clase and clase.audio_file:
-                file_name = os.path.basename(clase.audio_file) if '/' in clase.audio_file or '\\' in clase.audio_file else clase.audio_file
-                return jsonify({
-                    'success': True,
-                    'has_audio': False,
-                    'exists': False,
-                    'message': 'The file is registered in the database but does not exist on disk',
-                    'file_name': file_name,
-                    'clase_id': clase.id
-                })
+            # Check if it's using the new format (horario_X/file)
+            if clase.audio_file.startswith('horario_'):
+                audio_path = os.path.join(upload_folder, 'audios', 'permanent', clase.audio_file)
             else:
+                # Legacy path
+                audio_path = os.path.join(upload_folder, 'audios', clase.audio_file)
+            
+            app.logger.info(f"Looking for audio at database path: {audio_path}")
+            
+            if os.path.exists(audio_path):
+                file_size = os.path.getsize(audio_path)
+                app.logger.info(f"Found audio file from database: {audio_path}")
+                
+                # Determine the relative file path for the frontend
+                if clase.audio_file.startswith('horario_'):
+                    file_path = f"/static/uploads/audios/permanent/{clase.audio_file}"
+                else:
+                    file_path = f"/static/uploads/audios/{clase.audio_file}"
+                
                 return jsonify({
                     'success': True,
-                    'has_audio': False,
-                    'exists': False,
-                    'message': 'No audio file found on disk'
+                    'has_audio': True,
+                    'exists': True,
+                    'file_name': os.path.basename(audio_path),
+                    'file_path': file_path,
+                    'file_size': file_size,
+                    'file_size_readable': f"{file_size/1024:.2f} KB",
+                    'clase_id': clase.id,
+                    'fecha': clase.fecha.strftime('%Y-%m-%d') if clase.fecha else None
                 })
+        
+        # No audio found
+        app.logger.info(f"No audio found for horario_id: {horario_id}")
+        return jsonify({
+            'success': True,
+            'has_audio': False,
+            'exists': False,
+            'clase_id': clase.id if clase else None
+        })
+        
     except Exception as e:
         error_msg = str(e)
         app.logger.error(f"Error checking audio for horario_id: {horario_id}: {error_msg}")
+        import traceback
+        app.logger.error(traceback.format_exc())
         return jsonify({
             'success': False,
-            'has_audio': False,
-            'message': f"Error checking audio: {error_msg}",
-            'error_details': error_msg
+            'error': error_msg
         }), 500
 
 @app.route('/asistencia/audio/diagnostico')

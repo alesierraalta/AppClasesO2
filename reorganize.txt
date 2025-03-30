@@ -1,0 +1,65 @@
+# Archivos del núcleo de la aplicación
+app.py -> app\core\
+models.py -> app\models\
+
+# Rutas
+api_routes.py -> app\routes\
+app_routes.py -> app\routes\
+audio_routes.py -> app\routes\
+espectrograma_routes.py -> app\routes\
+
+# Utilidades
+audio_functions.py -> app\utils\
+audio_utils.py -> app\utils\
+add_waveform_route.py -> app\utils\
+notifications.py -> app\utils\
+register_audio.py -> app\utils\
+verify_notifications.py -> app\utils\
+
+# Scripts para Windows
+setup_network.bat -> scripts\windows\
+instalar_gymmanager.bat -> scripts\windows\
+verificar_red.bat -> scripts\windows\
+administrar.bat -> scripts\windows\
+build_app.bat -> scripts\windows\
+run.bat -> scripts\windows\
+run_tests.bat -> scripts\windows\
+ejecutar_tests.bat -> scripts\windows\
+test_simple.bat -> scripts\windows\
+run_notification_tests.bat -> scripts\windows\
+run_specific_tests.bat -> scripts\windows\
+
+# Scripts para Mac
+setup_mac.sh -> scripts\mac\
+verificar_red_mac.sh -> scripts\mac\
+administrar_mac.sh -> scripts\mac\
+
+# Scripts comunes
+app_launcher.py -> scripts\common\
+gym_app.spec -> scripts\common\
+
+# Herramientas de base de datos
+create_tables.py -> database\
+view_tables.py -> database\
+update_db.py -> database\
+reset_db.py -> database\
+gimnasio.db -> database\
+
+# Documentación
+README.md -> docs\
+README_SYNC.md -> docs\
+README_MAC.md -> docs\
+README_INSTALACION.md -> docs\
+
+# Logs
+notifications.log -> logs\
+crash_log.txt -> logs\
+import_debug.log -> logs\
+import_errors.log -> logs\
+PyWhatKit_DB.txt -> logs\
+.coverage -> logs\
+
+# Archivos de configuración
+sync_config.json -> app\core\
+.env -> app\core\
+pytest.ini -> tests\ 

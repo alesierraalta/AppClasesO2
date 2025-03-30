@@ -1,65 +1,64 @@
-# AppClasesO2
+# GymManager
 
-Sistema de gestión de clases para gimnasios y estudios fitness. Permite la administración de profesores, horarios, asistencia y generación de informes.
+Sistema de gestión integral para gimnasios, con funcionalidades de audio y notificaciones.
 
-## Características
+## Características Principales
 
-- Gestión de profesores y sus tarifas
-- Creación y modificación de horarios de clases
-- Registro de asistencia y puntualidad de profesores
-- Conteo de alumnos por clase
-- Cálculo automático de pagos (con reglas de negocio como reducción del 50% de tarifa cuando un profesor asiste pero no tiene alumnos)
-- Generación de informes mensuales
-- Exportación de datos a Excel
-- Sistema de notificaciones
-- Grabación de audio asociado a clases
+- Registro de asistencia de usuarios
+- Gestión de membresías y pagos
+- Notificaciones automáticas
+- Procesamiento de audio para anuncios
+- Sincronización entre múltiples equipos
+- Soporte multiplataforma (Windows y Mac)
 
 ## Requisitos
 
-- Python 3.7+
-- Flask
-- SQLAlchemy
-- Otras dependencias en requirements.txt
+- Python 3.8+
+- Base de datos SQLite
+- Dependencias adicionales (ver `requirements.txt`)
 
 ## Instalación
 
-1. Clonar el repositorio:
+### Windows
+
 ```
-git clone https://github.com/alesierraalta/AppClasesO2.git
-cd AppClasesO2
+scripts\windows\instalar_gymmanager.bat
 ```
 
-2. Crear entorno virtual:
-```
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-```
+### Mac
 
-3. Instalar dependencias:
 ```
-pip install -r requirements.txt
-```
-
-4. Configurar variables de entorno (opcional):
-```
-cp .env.example .env
-# Editar .env con tus configuraciones
-```
-
-5. Iniciar la aplicación:
-```
-python app.py
+./scripts/mac/setup_mac.sh
 ```
 
 ## Estructura del Proyecto
 
-- `app.py`: Aplicación principal Flask
-- `models.py`: Modelos de datos
-- `notifications.py`: Sistema de notificaciones
-- `templates/`: Plantillas HTML
-- `static/`: Archivos estáticos (CSS, JS, imágenes)
-- `tests/`: Pruebas unitarias y de integración
+Consulte [ESTRUCTURA.md](ESTRUCTURA.md) para una explicación detallada de la organización del código.
 
-## Licencia
+## Uso
 
-Este proyecto es privado y está desarrollado para uso exclusivo del propietario. 
+Ejecute desde la raíz del proyecto:
+
+```
+python main.py
+```
+
+O utilice los scripts específicos de cada plataforma en `scripts/windows` o `scripts/mac`.
+
+## Sincronización entre Equipos
+
+Este sistema cuenta con funcionalidad para sincronizar datos entre múltiples computadoras. 
+Para más información, consulte [README_SYNC.md](docs/README_SYNC.md).
+
+## Desarrollo
+
+Para modificar el código:
+
+1. Clone el repositorio
+2. Instale las dependencias: `pip install -r requirements.txt`
+3. Ejecute la aplicación en modo desarrollo: `python main.py --debug`
+
+## Soporte
+
+Para problemas conocidos o asistencia, revise la documentación en el directorio `docs/` o
+contacte al administrador del sistema. 

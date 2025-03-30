@@ -1,0 +1,2406 @@
+/* Mobile Responsive Styles */
+/* Breakpoints: 
+   - xs: 0-576px (móviles)
+   - sm: 576px-768px (tablets pequeñas)
+   - md: 768px-992px (tablets)
+   - lg: 992px-1200px (laptops)
+   - xl: 1200px+ (desktops) 
+*/
+
+/* Estilos globales para dispositivos móviles */
+@media (max-width: 576px) {
+    body {
+        font-size: 14px;
+        padding-bottom: 80px; /* Espacio para la barra de navegación inferior */
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.3rem;
+    }
+    
+    /* Ajustes para contenedores */
+    .container-fluid {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    /* Tarjetas más compactas */
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    .card-header {
+        padding: 12px 15px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    /* Tablas más compactas y con scroll horizontal */
+    .table-responsive {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    
+    .table th, 
+    .table td {
+        padding: 8px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+    
+    /* Formularios */
+    .form-control, 
+    .form-select {
+        font-size: 16px; /* Evita el zoom en iOS */
+        height: 42px;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    /* Botones más grandes para ser táctiles */
+    .btn {
+        padding: 8px 16px;
+        font-size: 1rem;
+        min-height: 44px; /* Mínimo recomendado para touch targets */
+    }
+    
+    .btn-sm {
+        min-height: 36px;
+        padding: 6px 12px;
+    }
+    
+    /* Menú de navegación inferior */
+    .ios-tab-bar {
+        padding: 8px 0 12px;
+    }
+    
+    .ios-tab-item i {
+        font-size: 1.5rem;
+    }
+    
+    .ios-tab-label {
+        font-size: 0.7rem;
+    }
+    
+    /* Ajustes para la barra de navegación superior */
+    .navbar {
+        padding: 12px 10px;
+        height: 56px;
+    }
+    
+    /* Ajustes para badges */
+    .badge {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+    
+    /* Cards de resumen/estadísticas con 2 columnas en móvil */
+    .dashboard-cards .col-md-3 {
+        width: 50%;
+        padding: 5px;
+    }
+    
+    .dashboard-cards .card {
+        height: 100%;
+    }
+    
+    /* Para modal dialogs */
+    .modal-dialog {
+        margin: 10px;
+    }
+    
+    .modal-header {
+        padding: 12px 15px;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .modal-footer {
+        padding: 12px 15px;
+    }
+    
+    /* Estilo para tablas especialmente complejas */
+    .complex-table th,
+    .complex-table td {
+        font-size: 0.75rem !important;
+        padding: 5px 3px !important;
+    }
+    
+    /* Para tablas con muchas columnas */
+    .many-columns th,
+    .many-columns td {
+        min-width: 80px;
+    }
+    
+    /* Ajustes para tablas en informes */
+    #tablaResumenProfesores {
+        font-size: 0.75rem;
+    }
+    
+    /* Hacer las tarjetas de resumen más pequeñas y en 2 columnas */
+    #resumen .col-md-3 {
+        width: 50%;
+        padding: 5px;
+    }
+    
+    /* Quitar espacio extra en las tablas */
+    .table-sm td, 
+    .table-sm th {
+        padding: 4px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    /* Ajustar el ancho de las columnas de tablas con muchos datos */
+    #tablaResumenProfesores th:nth-child(3),
+    #tablaResumenProfesores td:nth-child(3),
+    #tablaResumenProfesores th:nth-child(4),
+    #tablaResumenProfesores td:nth-child(4),
+    #tablaResumenProfesores th:nth-child(5),
+    #tablaResumenProfesores td:nth-child(5),
+    #tablaResumenProfesores th:nth-child(6),
+    #tablaResumenProfesores td:nth-child(6) {
+        max-width: 60px !important;
+        width: 60px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Convertir botones de texto a iconos */
+    .btn-export {
+        width: 44px !important;
+        overflow: hidden;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        text-align: center;
+    }
+    
+    /* Comprimir las listas desplegables */
+    .clases-detalle td {
+        padding: 5px !important;
+    }
+    
+    /* Ajustar las tablas de detalle */
+    .table-detail-mobile th,
+    .table-detail-mobile td {
+        font-size: 0.7rem !important;
+        padding: 3px !important;
+    }
+    
+    /* Mejorar visualización de tablas informes */
+    #tableclases th, 
+    #tableclases td,
+    #tablaNoRegistradas th,
+    #tablaNoRegistradas td {
+        font-size: 0.7rem !important;
+        padding: 4px !important;
+    }
+    
+    /* Ocultar columnas menos importantes en móvil */
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    /* Títulos adaptados para móvil */
+    .page-header {
+        font-size: 1.3rem !important;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+        line-height: 1.3;
+        margin-bottom: 0.8rem;
+        padding: 0 5px;
+    }
+    
+    h1, .h1 {
+        font-size: 1.5rem !important;
+        line-height: 1.3;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+    
+    h2, .h2 {
+        font-size: 1.3rem !important;
+        line-height: 1.3;
+    }
+    
+    h3, .h3 {
+        font-size: 1.2rem !important;
+        line-height: 1.3;
+    }
+    
+    /* Ajustes para botones que se salen del contenedor */
+    .btn-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0 -3px;
+        max-width: 100%;
+        padding: 0 5px;
+    }
+    
+    .btn-toolbar .btn {
+        margin: 3px !important;
+        flex: 0 0 auto;
+        max-width: 100%;
+    }
+
+    /* Contenedores de botones más estrechos */
+    .btn-toolbar .btn-group {
+        margin: 3px;
+        flex: 0 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    /* Evitar que los textos de botones causen overflow */
+    .btn {
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        padding: 8px 10px;
+        text-align: center;
+    }
+    
+    /* Reducir espacio horizontal usado por botones de acción */
+    .btn-icon-only {
+        width: 36px !important;
+        height: 36px !important;
+        padding: 6px !important;
+    }
+
+    /* Control de ancho máximo para divs y contenedores */
+    .container-fluid, 
+    .container, 
+    .row, 
+    .col, 
+    .col-sm, 
+    .col-md, 
+    .col-lg,
+    .card,
+    .table-responsive {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    
+    /* Asegurar que las tablas responsivas no desborden */
+    .table-responsive {
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+    
+    /* Mejorar comportamiento de los textos largos */
+    .text-truncate-mobile {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    /* Tarjetas de resumen más compactas con wrapping de texto */
+    #resumen .card-title,
+    #resumen .card-text {
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+    }
+    
+    /* Ajustes específicos para títulos en sección de informes */
+    .informe-header {
+        padding: 10px 5px !important;
+        font-size: 1.2rem !important;
+    }
+    
+    /* Mejorar ajuste de texto para fechas y filtros */
+    .date-range, 
+    .filter-label {
+        font-size: 0.85rem;
+        white-space: normal;
+    }
+    
+    /* Botones de exportación en grid */
+    .export-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 5px;
+        max-width: 100%;
+        padding: 5px;
+    }
+    
+    .export-buttons .btn {
+        margin: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* Ajustes para tablets pequeñas */
+@media (min-width: 577px) and (max-width: 768px) {
+    body {
+        font-size: 15px;
+        padding-bottom: 75px;
+    }
+    
+    .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Cards de resumen con 2 columnas en tablets pequeñas */
+    .dashboard-cards .col-md-3 {
+        width: 50%;
+        padding: 8px;
+    }
+    
+    /* Tablas reducidas */
+    .table th, 
+    .table td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    #tablaResumenProfesores {
+        font-size: 0.85rem;
+    }
+    
+    /* Reducir tarjetas de resumen a 2 columnas */
+    #resumen .col-md-3 {
+        width: 50%;
+        padding: 8px;
+    }
+    
+    /* Comprimir las tablas de detalle */
+    .clases-detalle td {
+        font-size: 0.85rem;
+    }
+}
+
+/* Ajustes específicos para la página de informes mensuales */
+@media (max-width: 768px) {
+    /* ===== ESTILOS GENERALES PARA INFORMES ===== */
+    body {
+        overflow-x: hidden;
+    }
+    
+    /* Contenedor principal */
+    .container-fluid.py-4 {
+        padding: 8px !important;
+        margin: 0 !important;
+        max-width: 100%;
+    }
+    
+    /* ===== CABECERA DE INFORME ===== */
+    /* Cabecera con título y acciones */
+    .card.bg-light.mb-4 {
+        margin-bottom: 12px !important;
+    }
+    
+    .card.bg-light.mb-4 .card-body {
+        padding: 10px !important;
+    }
+    
+    /* Información del informe */
+    .h3.mb-0.text-primary {
+        font-size: 1.3rem !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .lead.text-muted {
+        font-size: 0.9rem !important;
+        line-height: 1.2;
+    }
+    
+    /* Botones de exportación */
+    .export-buttons {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+        width: 100% !important;
+        margin-top: 12px !important;
+    }
+    
+    .btn-export {
+        min-width: auto !important;
+        padding: 8px 4px !important;
+        font-size: 0.85rem !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .btn-text {
+        display: none !important;
+    }
+    
+    /* ===== NAVEGACIÓN POR PESTAÑAS ===== */
+    .report-nav-pills {
+        display: flex !important;
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        margin-bottom: 16px !important;
+        padding: 0 !important;
+        flex-wrap: nowrap !important;
+        border-radius: 10px !important;
+    }
+    
+    .report-nav-pills::-webkit-scrollbar {
+        display: none !important;
+    }
+    
+    .report-nav-pills .nav-item {
+        flex: 0 0 auto !important;
+        margin: 0 3px !important;
+    }
+    
+    .report-nav-pills .nav-link {
+        white-space: nowrap !important;
+        padding: 8px 12px !important;
+        font-size: 0.85rem !important;
+        border-radius: 20px !important;
+    }
+    
+    /* ===== CARDS DE RESUMEN ===== */
+    #resumen {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        margin: 0 0 16px 0 !important;
+        padding: 0 !important;
+    }
+    
+    #resumen .col-md-3 {
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        flex: none !important;
+    }
+    
+    #resumen .card {
+        margin: 0 !important;
+        height: auto !important;
+        border-radius: 10px !important;
+    }
+    
+    #resumen .card-body {
+        padding: 12px 8px !important;
+    }
+    
+    #resumen .card-title {
+        font-size: 0.7rem !important;
+        margin-bottom: 5px !important;
+        white-space: normal !important;
+        line-height: 1.1 !important;
+    }
+    
+    #resumen .card-text.display-6 {
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 3px !important;
+    }
+    
+    #resumen .icon-bg {
+        width: 28px !important;
+        height: 28px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+    }
+    
+    #resumen .icon-bg i {
+        font-size: 0.8rem !important;
+    }
+    
+    /* ===== SECCIÓN DE PROFESORES ===== */
+    #profesores .card-header {
+        padding: 10px !important;
+    }
+    
+    #profesores .card-header h2 {
+        font-size: 1rem !important;
+    }
+    
+    /* Tabla de profesores */
+    #tablaResumenProfesores {
+        font-size: 0.75rem !important;
+        width: 100% !important;
+    }
+    
+    #tablaResumenProfesores th,
+    #tablaResumenProfesores td {
+        padding: 6px 4px !important;
+        white-space: nowrap !important;
+    }
+    
+    /* Fijar primera columna */
+    #tablaResumenProfesores th:first-child,
+    #tablaResumenProfesores td:first-child,
+    #tablaResumenProfesores th:nth-child(2),
+    #tablaResumenProfesores td:nth-child(2) {
+        position: sticky !important;
+        left: 0 !important;
+        z-index: 1 !important;
+        background-color: white !important;
+    }
+    
+    #tablaResumenProfesores th:nth-child(2),
+    #tablaResumenProfesores td:nth-child(2) {
+        left: 40px !important;
+        border-right: 1px solid rgba(0,0,0,0.1) !important;
+    }
+    
+    #tablaResumenProfesores th:first-child,
+    #tablaResumenProfesores td:first-child {
+        width: 40px !important;
+        max-width: 40px !important;
+    }
+    
+    /* Compactar datos del profesor */
+    .d-flex.align-items-center {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    
+    .avatar.rounded-circle {
+        width: 28px !important;
+        height: 28px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .fw-bold {
+        font-size: 0.75rem !important;
+        line-height: 1.1 !important;
+    }
+    
+    small.text-muted {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Botón toggle */
+    .toggle-clases {
+        width: 30px !important;
+        height: 30px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        background-color: #f8f9fa !important;
+        border-color: #dee2e6 !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .toggle-clases:hover, .toggle-clases:focus {
+        background-color: #e9ecef !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+    }
+    
+    .toggle-clases i {
+        font-size: 0.8rem !important;
+        color: #495057 !important;
+    }
+    
+    /* Efecto visual cuando se expande */
+    tr.profesor-row.expanded {
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Efecto visual cuando se contrae */
+    tr.profesor-row.collapsed {
+        border-bottom: 1px solid #f5f5f5 !important;
+    }
+    
+    /* Animación suave para el botón de toggle */
+    .toggle-clases i.fa-minus {
+        color: #0d6efd !important;
+    }
+    
+    /* Detalles de clases */
+    .clases-detalle td {
+        padding: 0 !important;
+    }
+    
+    .clases-detalle .bg-light {
+        padding: 6px !important;
+    }
+    
+    .clases-detalle h6 {
+        font-size: 0.8rem !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .clases-detalle .table-sm {
+        font-size: 0.65rem !important;
+    }
+    
+    .clases-detalle .table-sm th,
+    .clases-detalle .table-sm td {
+        padding: 4px 3px !important;
+        font-size: 0.65rem !important;
+    }
+    
+    /* ===== SECCIÓN DE CLASES ===== */
+    #clases.bg-primary {
+        border-radius: 8px 8px 0 0 !important;
+        padding: 10px !important;
+    }
+    
+    #clases h3 {
+        font-size: 1rem !important;
+        margin: 0 !important;
+    }
+    
+    #clases .badge {
+        font-size: 0.7rem !important;
+        padding: 3px 6px !important;
+    }
+    
+    /* Filtro de búsqueda */
+    .input-group {
+        margin-bottom: 8px !important;
+    }
+    
+    .form-control {
+        font-size: 0.85rem !important;
+        padding: 0.5rem !important;
+    }
+    
+    small.text-muted {
+        font-size: 0.7rem !important;
+    }
+    
+    /* Tabla de clases */
+    #tableclases {
+        font-size: 0.7rem !important;
+        width: 100% !important;
+    }
+    
+    #tableclases th,
+    #tableclases td {
+        padding: 6px 4px !important;
+        font-size: 0.7rem !important;
+        white-space: nowrap !important;
+    }
+    
+    #tableclases .fw-medium {
+        font-weight: 500 !important;
+    }
+    
+    #tableclases .align-middle {
+        vertical-align: middle !important;
+    }
+    
+    /* Badges en tablas */
+    .badge {
+        font-size: 0.65rem !important;
+        padding: 2px 5px !important;
+        white-space: nowrap !important;
+    }
+    
+    .badge.rounded-pill {
+        border-radius: 10px !important;
+    }
+    
+    /* ===== SECCIÓN DE CLASES NO REGISTRADAS ===== */
+    #clases-no-registradas.bg-warning {
+        border-radius: 8px 8px 0 0 !important;
+        padding: 10px !important;
+    }
+    
+    #clases-no-registradas h3 {
+        font-size: 1rem !important;
+        margin: 0 !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    
+    #clases-no-registradas .d-flex.align-items-center {
+        margin-top: 8px !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+    }
+    
+    #tablaNoRegistradas {
+        font-size: 0.7rem !important;
+        width: 100% !important;
+    }
+    
+    #tablaNoRegistradas th,
+    #tablaNoRegistradas td {
+        padding: 6px 4px !important;
+        font-size: 0.7rem !important;
+        white-space: nowrap !important;
+    }
+    
+    /* ===== SECCIÓN DE GRÁFICOS ===== */
+    #graficos.bg-primary {
+        border-radius: 8px 8px 0 0 !important;
+        padding: 10px !important;
+    }
+    
+    #graficos h3 {
+        font-size: 1rem !important;
+        margin: 0 !important;
+    }
+    
+    #graficos .card-body {
+        padding: 10px !important;
+    }
+    
+    #graficos .row {
+        margin: 0 !important;
+    }
+    
+    #graficos .col-md-6 {
+        padding: 0 0 10px 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+    }
+    
+    #graficos canvas {
+        max-height: 200px !important;
+    }
+    
+    /* ===== BOTÓN VOLVER ARRIBA ===== */
+    #btn-back-to-top {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 20px !important;
+        bottom: 15px !important;
+        right: 15px !important;
+        font-size: 1rem !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* ===== NO HAY DATOS ===== */
+    .alert-info {
+        border-radius: 10px !important;
+        padding: 12px !important;
+    }
+    
+    .alert-info h4 {
+        font-size: 1.1rem !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .alert-info p {
+        font-size: 0.85rem !important;
+        margin-bottom: 8px !important;
+    }
+    
+    /* ===== ANIMACIONES ===== */
+    /* Añadir indicadores de scroll para tablas */
+    .table-responsive {
+        position: relative !important;
+    }
+    
+    .table-responsive::after {
+        content: "→" !important;
+        position: absolute !important;
+        right: 0 !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        background: rgba(0,0,0,0.1) !important;
+        color: white !important;
+        border-radius: 4px 0 0 4px !important;
+        padding: 10px 5px !important;
+        font-size: 0.8rem !important;
+        pointer-events: none !important;
+        opacity: 0.7 !important;
+        animation: pulse 1.5s infinite !important;
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 0.4 !important; }
+        50% { opacity: 0.8 !important; }
+        100% { opacity: 0.4 !important; }
+    }
+
+    /* Corrección para tablas de detalles de clases por profesor */
+    .clases-detalle .table-sm {
+        font-size: 0.65rem !important;
+        width: 100% !important;
+        table-layout: fixed !important;
+        word-break: break-word !important;
+    }
+    
+    /* Corregir tamaños de columnas específicas */
+    .clases-detalle .table-sm th,
+    .clases-detalle .table-sm td {
+        padding: 3px 2px !important;
+        vertical-align: middle !important;
+        white-space: normal !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    
+    /* Columnas más importantes con ancho fijo */
+    .clases-detalle .table-sm th:nth-child(1),
+    .clases-detalle .table-sm td:nth-child(1) {
+        width: 65px !important; /* Fecha */
+    }
+    
+    .clases-detalle .table-sm th:nth-child(2),
+    .clases-detalle .table-sm td:nth-child(2) {
+        width: 65px !important; /* Clase */
+    }
+    
+    .clases-detalle .table-sm th:nth-child(3),
+    .clases-detalle .table-sm td:nth-child(3) {
+        width: 80px !important; /* Horario */
+    }
+    
+    .clases-detalle .table-sm th:nth-child(5),
+    .clases-detalle .table-sm td:nth-child(5) {
+        width: 50px !important; /* Hora llegada */
+    }
+    
+    .clases-detalle .table-sm th:nth-child(7),
+    .clases-detalle .table-sm td:nth-child(7) {
+        width: 45px !important; /* Alumnos */
+    }
+    
+    .clases-detalle .table-sm th:nth-child(8),
+    .clases-detalle .table-sm td:nth-child(8) {
+        width: 45px !important; /* Pago */
+    }
+    
+    /* Ocultar observaciones en móvil o reducir su tamaño */
+    .clases-detalle .table-sm th:nth-child(9),
+    .clases-detalle .table-sm td:nth-child(9) {
+        width: 30px !important;
+    }
+    
+    /* Asegurarse de que el estado de la clase se vea correctamente */
+    .clases-detalle .table-sm th:nth-child(4),
+    .clases-detalle .table-sm td:nth-child(4) {
+        min-width: 70px !important;
+    }
+    
+    /* Desplazamiento horizontal suave para tablas de detalles */
+    .clases-detalle .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: thin !important;
+    }
+    
+    /* Indicador visual de desplazamiento horizontal */
+    .clases-detalle .table-responsive::after {
+        content: "→" !important;
+        position: absolute !important;
+        right: 0 !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        background: rgba(13, 110, 253, 0.2) !important;
+        color: #0d6efd !important;
+        border-radius: 4px 0 0 4px !important;
+        padding: 10px 5px !important;
+        font-size: 0.8rem !important;
+        pointer-events: none !important;
+        opacity: 0.7 !important;
+        animation: pulse 1.5s infinite !important;
+        z-index: 10 !important;
+    }
+    
+    /* Ajustar las badges para que no ocupen demasiado espacio */
+    .clases-detalle .badge {
+        padding: 2px 4px !important;
+        font-size: 0.6rem !important;
+        white-space: nowrap !important;
+    }
+    
+    /* Mejorar la expansión para que ocupe todo el ancho disponible */
+    .clases-detalle {
+        width: 100% !important;
+    }
+    
+    .clases-detalle td {
+        padding: 0 !important;
+    }
+    
+    .clases-detalle .bg-light {
+        padding: 5px !important;
+    }
+
+    /* Corregir problemas con fechas fijas y botones de expansión */
+    #tablaResumenProfesores th:first-child,
+    #tablaResumenProfesores td:first-child {
+        position: relative !important;
+        left: auto !important;
+        z-index: 1 !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+    
+    /* Mejorar los botones para expandir/colapsar en tablas y tarjetas */
+    button[data-bs-toggle="collapse"],
+    .toggle-clases {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        background-color: #f8f9fa !important;
+        border: 1px solid #dee2e6 !important;
+        color: #0d6efd !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        transition: all 0.2s ease !important;
+        margin: 0 auto !important;
+        z-index: 2 !important;
+    }
+    
+    button[data-bs-toggle="collapse"]:hover,
+    button[data-bs-toggle="collapse"]:focus,
+    .toggle-clases:hover,
+    .toggle-clases:focus {
+        background-color: #e2e6ea !important;
+        border-color: #dae0e5 !important;
+        transform: scale(1.05) !important;
+    }
+    
+    button[data-bs-toggle="collapse"] i,
+    .toggle-clases i {
+        font-size: 0.9rem !important;
+        transition: transform 0.2s ease !important;
+    }
+    
+    /* Optimizar clases de detalles */
+    .clases-detalle {
+        overflow-x: auto !important;
+    }
+    
+    /* Ajustes para la fecha en tablas detalladas */
+    .clases-detalle .table-sm td:first-child,
+    .clases-detalle .table-sm th:first-child {
+        position: relative !important;
+        left: auto !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+    
+    /* Agregar indicadores visuales para los botones de colapso */
+    .collapsed .fa-angle-up {
+        transform: rotate(180deg) !important;
+    }
+    
+    /* Asegurar que todas las tablas tengan desplazamiento horizontal correcto */
+    .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Asegurar que todos los encabezados de la tabla estén visibles */
+    .table th {
+        white-space: normal !important;
+        min-width: auto !important;
+        background-color: #f8f9fa !important;
+    }
+
+    /* Ajustes para botones específicos de toggle-card */
+    .toggle-card {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background-color: #f8f9fa !important;
+        border: 1px solid #dee2e6 !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .toggle-card i {
+        color: #0d6efd !important;
+        font-size: 0.9rem !important;
+        transition: transform 0.3s ease !important;
+    }
+    
+    .toggle-card[aria-expanded="false"] i.fa-angle-up {
+        transform: rotate(180deg) !important;
+    }
+    
+    /* Eliminar posición sticky en todas las tablas en móvil */
+    .table th, 
+    .table td {
+        position: static !important;
+    }
+    
+    /* Mejorar visibilidad de tablas */
+    .table-responsive {
+        max-width: 100vw !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: thin !important;
+    }
+    
+    /* Asegurar que las tablas tengan bordes visibles */
+    .table {
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        width: 100% !important;
+    }
+    
+    /* Estilo para las filas expandidas */
+    tr.profesor-row.expanded {
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+    
+    /* Estilo para las filas colapsadas */
+    tr.profesor-row.collapsed:hover {
+        cursor: pointer !important;
+    }
+    
+    /* Ajustar el espacio de la primera columna para los botones */
+    #tablaResumenProfesores td:first-child {
+        width: 40px !important; 
+        padding: 5px !important;
+        text-align: center !important;
+    }
+    
+    /* Mejores transiciones para animaciones */
+    .collapse {
+        transition: height 0.35s ease !important;
+    }
+
+    /* Optimización para tablas en móvil - solución de columnas fijas */
+    @media (max-width: 768px) {
+        /* Prevenir que las tablas se rompan en móvil */
+        .table-responsive {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+        
+        /* Desactivar estilos sticky que causan problemas en móvil */
+        .table th, 
+        .table td {
+            position: static !important;
+        }
+        
+        /* Asegurar que las columnas de tablas tengan ancho adecuado */
+        .table th, 
+        .table td {
+            white-space: nowrap !important;
+            min-width: unset !important;
+            max-width: unset !important;
+        }
+        
+        /* Optimizar tabla de profesores */
+        #tablaResumenProfesores {
+            width: 100% !important;
+            table-layout: auto !important;
+        }
+        
+        /* Optimizar tabla de clases profesor */
+        .clases-detalle .table-sm {
+            width: 100% !important;
+            table-layout: auto !important;
+        }
+        
+        /* Desactivar animaciones innecesarias que afectan rendimiento */
+        .clases-detalle .table-responsive::after {
+            display: none !important;
+        }
+        
+        /* Permitir envolver el texto en las tablas, específicamente en encabezados */
+        .table th {
+            white-space: normal !important;
+            word-break: normal !important;
+            overflow-wrap: break-word !important;
+            font-size: 0.7rem !important;
+        }
+        
+        /* Mejorar tamaño de texto en tablas */
+        .table td {
+            font-size: 0.7rem !important;
+            padding: 4px !important;
+        }
+        
+        /* Mejorar visibilidad de íconos en tablas */
+        .table .btn-sm {
+            padding: 2px 4px !important;
+            font-size: 0.7rem !important;
+        }
+        
+        /* Desactivar posiciones fijas */
+        #tablaResumenProfesores th:first-child,
+        #tablaResumenProfesores td:first-child,
+        #tablaResumenProfesores th:nth-child(2),
+        #tablaResumenProfesores td:nth-child(2) {
+            position: static !important;
+            left: auto !important;
+            z-index: auto !important;
+            background-color: inherit !important;
+            box-shadow: none !important;
+        }
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 400px) {
+    .report-nav-pills .nav-link {
+        padding: 6px 8px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    #resumen {
+        gap: 5px !important;
+    }
+    
+    #resumen .card-body {
+        padding: 8px 5px !important;
+    }
+    
+    #resumen .card-text.display-6 {
+        font-size: 1.1rem !important;
+    }
+    
+    #resumen .card-title {
+        font-size: 0.65rem !important;
+    }
+    
+    #resumen .icon-bg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    
+    .export-buttons {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+/* ESTILOS ESPECÍFICOS PARA LA PÁGINA DE SELECCIÓN DE MES */
+@media (max-width: 768px) {
+    /* Formulario de selección de informe mensual */
+    .container.py-5 {
+        padding: 1.5rem 0.5rem !important;
+    }
+    
+    .card.shadow-lg {
+        border-radius: 12px !important;
+        overflow: hidden !important;
+    }
+    
+    .card-header.bg-gradient-primary-to-secondary {
+        padding: 15px 10px !important;
+    }
+    
+    .feature.bg-primary {
+        width: 50px !important; 
+        height: 50px !important;
+        line-height: 50px !important;
+    }
+    
+    .feature.bg-primary i {
+        font-size: 1.5rem !important;
+    }
+    
+    h4.fw-light {
+        font-size: 1.2rem !important;
+        margin-bottom: 5px !important;
+    }
+    
+    p.text-muted {
+        font-size: 0.9rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .form-label {
+        font-size: 0.9rem !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .form-select-lg {
+        font-size: 0.95rem !important;
+        padding: 0.5rem !important;
+        height: auto !important;
+    }
+    
+    .invalid-feedback {
+        font-size: 0.8rem !important;
+    }
+    
+    .mobile-actions {
+        margin-top: 1.5rem !important;
+    }
+    
+    .mobile-actions .btn {
+        margin-bottom: 8px !important;
+        padding: 10px !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .btn-lg {
+        font-size: 0.95rem !important;
+        padding: 10px 20px !important;
+    }
+    
+    .small.text-muted {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 400px) {
+    .container.py-5 {
+        padding: 1rem 0.25rem !important;
+    }
+    
+    .card-header h3 {
+        font-size: 1.2rem !important;
+    }
+    
+    .feature.bg-primary {
+        width: 40px !important; 
+        height: 40px !important;
+        line-height: 40px !important;
+    }
+    
+    .feature.bg-primary i {
+        font-size: 1.2rem !important;
+    }
+    
+    h4.fw-light {
+        font-size: 1.1rem !important;
+    }
+    
+    .btn-lg {
+        font-size: 0.9rem !important;
+        padding: 8px 15px !important;
+    }
+}
+
+/* Limpiar los estilos anteriores del resumen y dejar solo los nuevos */
+@media (max-width: 768px) {
+    #resumen {
+        margin-bottom: 16px !important;
+    }
+    
+    /* Quitar todos los estilos anteriores */
+    #resumen .col-md-3, 
+    #resumen .col-6 {
+        padding: 0 5px !important;
+    }
+    
+    /* Nueva definición de tarjetas */
+    .card-value {
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        color: #212529 !important;
+    }
+    
+    .card-clases {
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+    
+    .card-alumnos {
+        background-color: rgba(25, 135, 84, 0.05) !important;
+    }
+    
+    .card-retrasos {
+        background-color: rgba(255, 193, 7, 0.05) !important;
+    }
+    
+    .card-pagos {
+        background-color: rgba(13, 202, 240, 0.05) !important;
+    }
+    
+    #resumen .card {
+        border-radius: 12px !important;
+        border: none !important;
+        margin-bottom: 10px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+    }
+    
+    #resumen .card-body {
+        padding: 12px 8px !important;
+    }
+    
+    #resumen .card-title {
+        font-size: 0.7rem !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+        margin-bottom: 6px !important;
+    }
+    
+    .icon-bg {
+        width: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 50% !important;
+        background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+    
+    .icon-bg i {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* iOS App Style Mobile Interface */
+:root {
+    --ios-gray: #f2f2f7;
+    --ios-light-gray: #e5e5ea;
+    --ios-border: #c7c7cc;
+    --ios-blue: #007aff;
+    --ios-green: #34c759;
+    --ios-red: #ff3b30;
+    --ios-text: #000000;
+    --ios-secondary-text: #8e8e93;
+    --ios-background: #ffffff;
+    --ios-header-height: 44px;
+    --ios-tab-height: 50px;
+}
+
+@media (max-width: 768px) {
+    /* Global iOS-style resets */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "San Francisco", Helvetica, Arial, sans-serif;
+        background-color: var(--ios-gray);
+        color: var(--ios-text);
+        padding-bottom: calc(var(--ios-tab-height) + 15px);
+        padding-top: calc(var(--ios-header-height) + 5px);
+        font-size: 16px;
+        line-height: 1.4;
+        -webkit-font-smoothing: antialiased;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* iOS-style typography */
+    h1 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+    
+    h2 {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 14px;
+    }
+    
+    h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+    
+    /* iOS-style screen container */
+    .ios-container {
+        max-width: 100%;
+        padding: 0;
+        margin-bottom: 80px;
+    }
+    
+    .container, .container-fluid {
+        padding-left: 16px;
+        padding-right: 16px;
+        background-color: var(--ios-background);
+    }
+    
+    /* iOS-style cards */
+    .card {
+        border-radius: 13px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        margin-bottom: 16px;
+        border: none;
+        overflow: hidden;
+        background: var(--ios-background);
+    }
+    
+    .card-header {
+        padding: 15px 16px;
+        background-color: var(--ios-background);
+        border-bottom: 1px solid var(--ios-light-gray);
+        font-weight: 600;
+        font-size: 17px;
+    }
+    
+    .card-body {
+        padding: 16px;
+    }
+    
+    .card-footer {
+        padding: 14px 16px;
+        background-color: var(--ios-background);
+        border-top: 1px solid var(--ios-light-gray);
+    }
+    
+    /* iOS-style table cells */
+    .ios-table {
+        background-color: var(--ios-background);
+        border-radius: 13px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    .ios-table .table {
+        margin-bottom: 0;
+    }
+    
+    .table td, .table th {
+        padding: 13px 16px;
+        border-top: none;
+        border-bottom: 1px solid var(--ios-light-gray);
+        vertical-align: middle;
+    }
+    
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .table th {
+        color: var(--ios-secondary-text);
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+    }
+    
+    /* iOS-style navigation header */
+    .ios-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--ios-header-height);
+        background-color: rgba(255,255,255,0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+    }
+    
+    .ios-header-title {
+        font-weight: 600;
+        font-size: 17px;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .ios-back-button {
+        padding: 8px;
+        margin-right: auto;
+        color: var(--ios-blue);
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .ios-back-button i {
+        margin-right: 4px;
+    }
+    
+    .ios-action-button {
+        padding: 8px;
+        margin-left: auto;
+        color: var(--ios-blue);
+        font-size: 17px;
+    }
+    
+    /* iOS-style tab bar */
+    .ios-tab-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: var(--ios-tab-height);
+        background-color: rgba(255,255,255,0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid var(--ios-light-gray);
+        display: flex;
+        z-index: 1000;
+    }
+    
+    .ios-tab-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--ios-secondary-text);
+        padding: 6px 0;
+        transition: all 0.2s ease;
+    }
+    
+    .ios-tab-item.active {
+        color: var(--ios-blue);
+    }
+    
+    .ios-tab-icon {
+        font-size: 22px;
+        margin-bottom: 2px;
+    }
+    
+    .ios-tab-label {
+        font-size: 10px;
+        font-weight: 500;
+    }
+    
+    /* iOS-style forms */
+    .ios-form-group {
+        margin-bottom: 16px;
+    }
+    
+    .ios-form-label {
+        font-size: 13px;
+        color: var(--ios-secondary-text);
+        margin-bottom: 6px;
+        font-weight: 500;
+    }
+    
+    .ios-form-control {
+        border-radius: 10px;
+        border: 1px solid var(--ios-border);
+        padding: 12px 16px;
+        font-size: 17px;
+        width: 100%;
+        appearance: none;
+        background-color: var(--ios-background);
+    }
+    
+    /* iOS-style buttons */
+    .btn, .ios-button {
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 17px;
+        font-weight: 600;
+        border: none;
+        transition: all 0.2s ease;
+        height: 44px; /* Standard iOS button height */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-primary, .ios-button-primary {
+        background-color: var(--ios-blue);
+        color: white;
+    }
+    
+    .btn-success, .ios-button-success {
+        background-color: var(--ios-green);
+        color: white;
+    }
+    
+    .btn-danger, .ios-button-danger {
+        background-color: var(--ios-red);
+        color: white;
+    }
+    
+    .btn-outline-primary, .ios-button-outline {
+        background-color: transparent;
+        color: var(--ios-blue);
+        border: 1px solid var(--ios-blue);
+    }
+    
+    .btn-sm, .ios-button-sm {
+        font-size: 15px;
+        padding: 8px 12px;
+        height: 36px;
+    }
+    
+    .btn-lg, .ios-button-lg {
+        font-size: 18px;
+        padding: 14px 20px;
+        height: 52px;
+    }
+    
+    /* iOS-style action buttons (circle) */
+    .ios-action-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        background-color: var(--ios-blue);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 4px 10px rgba(0,123,255,0.25);
+        position: fixed;
+        right: 20px;
+        bottom: calc(var(--ios-tab-height) + 20px);
+        z-index: 900;
+    }
+    
+    /* iOS-style list views */
+    .ios-list {
+        background-color: var(--ios-background);
+        border-radius: 13px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    .ios-list-item {
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        border-bottom: 1px solid var(--ios-light-gray);
+    }
+    
+    .ios-list-item:last-child {
+        border-bottom: none;
+    }
+    
+    .ios-list-item-title {
+        font-size: 17px;
+        flex: 1;
+    }
+    
+    .ios-list-item-subtitle {
+        font-size: 15px;
+        color: var(--ios-secondary-text);
+        margin-top: 2px;
+    }
+    
+    .ios-list-item-right {
+        color: var(--ios-secondary-text);
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+    }
+    
+    .ios-list-item-right i {
+        font-size: 15px;
+        margin-left: 6px;
+    }
+    
+    /* iOS-style segmented controls */
+    .ios-segmented {
+        display: flex;
+        background-color: var(--ios-light-gray);
+        border-radius: 8px;
+        padding: 2px;
+        margin-bottom: 20px;
+    }
+    
+    .ios-segment {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--ios-secondary-text);
+        border-radius: 6px;
+    }
+    
+    .ios-segment.active {
+        background-color: var(--ios-background);
+        color: var(--ios-text);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    /* iOS-style badges */
+    .badge, .ios-badge {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 50px;
+        background-color: var(--ios-red);
+        color: white;
+    }
+    
+    /* iOS-style separator */
+    .ios-separator {
+        height: 8px;
+        background-color: var(--ios-gray);
+    }
+    
+    /* iOS-style section titles */
+    .ios-section-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 24px 0 16px;
+        padding: 0 16px;
+    }
+    
+    .ios-section-subtitle {
+        font-size: 15px;
+        color: var(--ios-secondary-text);
+        margin: -12px 0 16px;
+        padding: 0 16px;
+    }
+    
+    /* iOS-style cards for summaries */
+    .ios-summary-card {
+        padding: 20px;
+        background-color: var(--ios-background);
+        border-radius: 13px;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+    
+    .ios-summary-value {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--ios-blue);
+        margin-bottom: 4px;
+    }
+    
+    .ios-summary-label {
+        font-size: 15px;
+        color: var(--ios-secondary-text);
+    }
+    
+    /* iOS-style grid layout */
+    .ios-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .ios-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    /* iOS-style message bubbles */
+    .ios-message {
+        background-color: var(--ios-light-gray);
+        border-radius: 18px;
+        padding: 10px 15px;
+        margin-bottom: 8px;
+        display: inline-block;
+        max-width: 75%;
+    }
+    
+    .ios-message-sent {
+        background-color: var(--ios-blue);
+        color: white;
+        border-bottom-right-radius: 4px;
+        margin-left: auto;
+    }
+    
+    .ios-message-received {
+        background-color: var(--ios-light-gray);
+        border-bottom-left-radius: 4px;
+        margin-right: auto;
+    }
+    
+    /* iOS-style alerts */
+    .ios-alert {
+        position: fixed;
+        top: 20%;
+        left: 10%;
+        right: 10%;
+        background-color: rgba(255,255,255,0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 13px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        z-index: 9999;
+        display: none;
+    }
+    
+    .ios-alert-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    
+    .ios-alert-message {
+        margin-bottom: 20px;
+        font-size: 15px;
+        color: var(--ios-secondary-text);
+    }
+    
+    .ios-alert-actions {
+        display: flex;
+        border-top: 1px solid var(--ios-light-gray);
+        margin: 0 -20px -20px;
+    }
+    
+    .ios-alert-action {
+        flex: 1;
+        padding: 12px 0;
+        font-size: 17px;
+        color: var(--ios-blue);
+        font-weight: 600;
+        border-right: 1px solid var(--ios-light-gray);
+    }
+    
+    .ios-alert-action:last-child {
+        border-right: none;
+    }
+    
+    .ios-alert-action-destructive {
+        color: var(--ios-red);
+    }
+    
+    /* iOS-style spinner */
+    .ios-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(0,122,255,0.2);
+        border-top-color: var(--ios-blue);
+        border-radius: 50%;
+        animation: ios-spin 0.8s linear infinite;
+    }
+    
+    @keyframes ios-spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* iOS-style switches */
+    .ios-switch {
+        position: relative;
+        display: inline-block;
+        width: 51px;
+        height: 31px;
+    }
+    
+    .ios-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .ios-switch-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--ios-light-gray);
+        border-radius: 31px;
+        transition: .4s;
+    }
+    
+    .ios-switch-slider:before {
+        position: absolute;
+        content: "";
+        height: 27px;
+        width: 27px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        border-radius: 50%;
+        transition: .4s;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    .ios-switch input:checked + .ios-switch-slider {
+        background-color: var(--ios-green);
+    }
+    
+    .ios-switch input:checked + .ios-switch-slider:before {
+        transform: translateX(20px);
+    }
+    
+    /* Specific components for reports */
+    /* Table responsive with iOS style scroll indicators */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+        margin-bottom: 20px;
+        background: var(--ios-background);
+        border-radius: 13px;
+    }
+    
+    /* iOS-style scroll indicator */
+    .ios-scroll-indicator {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(0,0,0,0.6);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+    }
+    
+    /* iOS-style card for report summaries */
+    .ios-report-card {
+        border-radius: 13px;
+        background: var(--ios-background);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+    
+    .ios-report-header {
+        padding: 15px;
+        background: rgba(0,122,255,0.1);
+        border-bottom: 1px solid var(--ios-light-gray);
+    }
+    
+    .ios-report-title {
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--ios-blue);
+        margin-bottom: 4px;
+    }
+    
+    .ios-report-subtitle {
+        font-size: 13px;
+        color: var(--ios-secondary-text);
+    }
+    
+    .ios-report-body {
+        padding: 15px;
+    }
+    
+    .ios-report-data {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .ios-report-item {
+        text-align: center;
+    }
+    
+    .ios-report-value {
+        font-size: 17px;
+        font-weight: 600;
+    }
+    
+    .ios-report-label {
+        font-size: 13px;
+        color: var(--ios-secondary-text);
+    }
+    
+    .ios-report-footer {
+        padding: 15px;
+        border-top: 1px solid var(--ios-light-gray);
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    /* iOS-style filters */
+    .ios-filter-bar {
+        padding: 15px 16px;
+        background: var(--ios-background);
+        margin-bottom: 15px;
+        border-radius: 13px;
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .ios-filter-button {
+        background: var(--ios-light-gray);
+        border-radius: 20px;
+        padding: 6px 15px;
+        font-size: 15px;
+        white-space: nowrap;
+        color: var(--ios-text);
+    }
+    
+    .ios-filter-button.active {
+        background: var(--ios-blue);
+        color: white;
+    }
+    
+    /* iOS-style compact tables for reports */
+    .ios-compact-table {
+        font-size: 14px;
+    }
+    
+    .ios-compact-table th {
+        background: var(--ios-light-gray);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 10px;
+    }
+    
+    .ios-compact-table td {
+        padding: 10px;
+    }
+    
+    /* iOS-style teacher row */
+    .ios-teacher-row {
+        display: flex;
+        align-items: center;
+        padding: 10px 16px;
+        background: var(--ios-background);
+        border-bottom: 1px solid var(--ios-light-gray);
+    }
+    
+    .ios-teacher-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 12px;
+        background: var(--ios-light-gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--ios-secondary-text);
+        font-size: 16px;
+    }
+    
+    .ios-teacher-info {
+        flex: 1;
+    }
+    
+    .ios-teacher-name {
+        font-size: 17px;
+        font-weight: 500;
+    }
+    
+    .ios-teacher-details {
+        font-size: 14px;
+        color: var(--ios-secondary-text);
+    }
+    
+    .ios-teacher-actions {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .ios-action-button {
+        color: var(--ios-blue);
+        font-size: 18px;
+    }
+}
+
+/* Pantallas pequeñas (iPhone SE, etc) */
+@media (max-width: 380px) {
+    .ios-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ios-header-title {
+        font-size: 16px;
+    }
+    
+    .ios-back-button, .ios-action-button {
+        font-size: 15px;
+    }
+    
+    .ios-report-data {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos específicos para la página de informes en dispositivos móviles */
+@media (max-width: 768px) {
+    /* Contenedor de informes */
+    .container-fluid.py-4 {
+        padding: 10px 5px !important;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    
+    /* Encabezado y botones */
+    .card-body {
+        padding: 10px !important;
+    }
+    
+    /* Arreglar superposición de elementos */
+    .d-flex.flex-column.flex-md-row {
+        gap: 10px;
+    }
+    
+    /* Tarjetas de estadísticas */
+    #resumen .col-md-3 {
+        margin-bottom: 10px;
+    }
+    
+    /* Tablas de datos */
+    .table-responsive {
+        margin: 0 -5px;
+        padding-bottom: 10px;
+    }
+    
+    /* Fijar encabezados para evitar que se muevan durante scroll */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 2;
+        box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+    }
+    
+    /* Tablas específicas */
+    #tablaResumenProfesores, 
+    #tableclases, 
+    #tablaNoRegistradas {
+        width: 100%;
+    }
+    
+    /* Optimizar columnas en tablas */
+    #tablaResumenProfesores th:nth-child(4),
+    #tablaResumenProfesores td:nth-child(4),
+    #tablaResumenProfesores th:nth-child(5),
+    #tablaResumenProfesores td:nth-child(5) {
+        max-width: 60px !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Ajustar botones de acción */
+    .report-actions .btn {
+        margin-bottom: 5px;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+    
+    /* Mejorar visualización de pestañas */
+    .report-nav-pills {
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .report-nav-pills::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .report-nav-pills .nav-item {
+        flex: 0 0 auto;
+    }
+    
+    .report-nav-pills .nav-link {
+        white-space: nowrap;
+        padding: 8px 12px;
+    }
+    
+    /* Gráficos más compactos */
+    #graficos .card-body {
+        padding: 10px !important;
+    }
+    
+    /* Adaptar gráficos para mejor visualización */
+    canvas {
+        max-height: 250px !important;
+    }
+    
+    /* Hacer que las filas de tablas sean más compactas */
+    .table th, 
+    .table td {
+        padding: 8px 5px !important;
+        font-size: 0.8rem !important;
+        vertical-align: middle !important;
+    }
+    
+    /* Mejoras para botones de acción */
+    .export-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        margin-top: 10px;
+    }
+    
+    .btn-export {
+        padding: 8px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+    }
+    
+    /* Ocultar texto en botones, mostrar solo iconos */
+    .btn-export .btn-text {
+        display: none;
+    }
+    
+    /* Títulos más compactos */
+    h1.h3 {
+        font-size: 1.5rem !important;
+    }
+    
+    .lead {
+        font-size: 1rem !important;
+    }
+    
+    /* Espacio extra debajo del último elemento */
+    .container-fluid > .row:last-child {
+        margin-bottom: 60px;
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 400px) {
+    .card-title {
+        font-size: 0.75rem !important;
+    }
+    
+    .display-6 {
+        font-size: 1.2rem !important;
+    }
+    
+    .table th, 
+    .table td {
+        padding: 5px 3px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .report-nav-pills .nav-link {
+        padding: 6px 8px !important;
+        font-size: 0.8rem !important;
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 400px) {
+    .container.py-5 {
+        padding: 1rem 0.25rem !important;
+    }
+    
+    .card-header h3 {
+        font-size: 1.2rem !important;
+    }
+    
+    .feature.bg-primary {
+        width: 40px !important; 
+        height: 40px !important;
+        line-height: 40px !important;
+    }
+    
+    .feature.bg-primary i {
+        font-size: 1.2rem !important;
+    }
+    
+    h4.fw-light {
+        font-size: 1.1rem !important;
+    }
+    
+    .btn-lg {
+        font-size: 0.9rem !important;
+        padding: 8px 15px !important;
+    }
+}
+
+/* Limpiar los estilos anteriores del resumen y dejar solo los nuevos */
+@media (max-width: 768px) {
+    #resumen {
+        margin-bottom: 16px !important;
+    }
+    
+    /* Quitar todos los estilos anteriores */
+    #resumen .col-md-3, 
+    #resumen .col-6 {
+        padding: 0 5px !important;
+    }
+    
+    /* Nueva definición de tarjetas */
+    .card-value {
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        color: #212529 !important;
+    }
+    
+    .card-clases {
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+    
+    .card-alumnos {
+        background-color: rgba(25, 135, 84, 0.05) !important;
+    }
+    
+    .card-retrasos {
+        background-color: rgba(255, 193, 7, 0.05) !important;
+    }
+    
+    .card-pagos {
+        background-color: rgba(13, 202, 240, 0.05) !important;
+    }
+    
+    #resumen .card {
+        border-radius: 12px !important;
+        border: none !important;
+        margin-bottom: 10px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+    }
+    
+    #resumen .card-body {
+        padding: 12px 8px !important;
+    }
+    
+    #resumen .card-title {
+        font-size: 0.7rem !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+        margin-bottom: 6px !important;
+    }
+    
+    .icon-bg {
+        width: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 50% !important;
+        background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+    
+    .icon-bg i {
+        font-size: 0.9rem !important;
+    }
+} 
+
+/* Eliminación automática de elementos duplicados */
+.duplicate-card-removed {
+    display: none !important;
+}
+
+/* Ajuste para asegurar que solo se muestren las tarjetas originales */
+#resumen + #resumen,
+#resumen ~ #resumen {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    /* Estilos existentes */
+} 

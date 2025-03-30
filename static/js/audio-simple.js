@@ -88,7 +88,10 @@ console.log('Audio Simple Controls script cargando...');
         
         // Hacer la petición para verificar la existencia del audio
         fetch(urlWithTimestamp)
-            .then(response => response.json())
+            .then(response => {
+                console.log(`[DEBUG] Respuesta de verificación recibida con status: ${response.status}`);
+                return response.json();
+            })
             .then(data => {
                 console.log(`[DEBUG] Respuesta del servidor para verificación de audio:`, data);
                 if (data.success) {
@@ -116,10 +119,12 @@ console.log('Audio Simple Controls script cargando...');
             audioSrc = audioInfo.file_path.startsWith('/') 
                 ? `${audioInfo.file_path}?t=${new Date().getTime()}`
                 : `/${audioInfo.file_path}?t=${new Date().getTime()}`;
+            console.log(`[DEBUG] Usando ruta de archivo de audioInfo: ${audioSrc}`);
         } else {
             audioSrc = window.AUDIO_GET_URL 
                 ? `${window.AUDIO_GET_URL}/${horarioId}?t=${new Date().getTime()}`
                 : `/asistencia/audio/get/${horarioId}?t=${new Date().getTime()}`;
+            console.log(`[DEBUG] Usando ruta de API generada: ${audioSrc}`);
         }
         
         console.log(`[DEBUG] URL del audio construida: ${audioSrc}`);
@@ -134,7 +139,7 @@ console.log('Audio Simple Controls script cargando...');
                     <span class="audio-label">Audio de la clase</span>
                     <a href="#" class="replace-audio-link small d-block" data-horario-id="${horarioId}">Reemplazar audio</a>
                 </div>
-                <audio id="${playerId}" class="d-none" data-horario-id="${horarioId}">
+                <audio id="${playerId}" class="d-none" data-horario-id="${horarioId}" preload="auto">
                     <source src="${audioSrc}" type="audio/mpeg">
                 </audio>
             </div>
@@ -145,6 +150,24 @@ console.log('Audio Simple Controls script cargando...');
         // Re-inicializar los eventos para este contenedor
         initializePlayButtons();
         initializeReplaceLinks();
+        
+        // Agregar evento para detectar cuando el audio está listo
+        const audioElement = document.getElementById(playerId);
+        if (audioElement) {
+            audioElement.addEventListener('canplaythrough', function() {
+                console.log(`[DEBUG] Audio para horario ID ${horarioId} está listo para reproducirse sin interrupciones`);
+            });
+            
+            audioElement.addEventListener('loadeddata', function() {
+                console.log(`[DEBUG] Datos de audio cargados para horario ID ${horarioId}`);
+            });
+            
+            audioElement.addEventListener('error', function(e) {
+                console.error(`[ERROR] Error cargando audio para horario ID ${horarioId}:`, e);
+                console.error(`[ERROR] Código de error:`, this.error ? this.error.code : 'desconocido');
+                console.error(`[ERROR] URL del audio:`, audioSrc);
+            });
+        }
     }
 
     // Función para inicializar los botones de reproducción
@@ -156,7 +179,7 @@ console.log('Audio Simple Controls script cargando...');
                 const audioElement = document.getElementById(`audio-${horarioId}`);
                 
                 if (!audioElement) {
-                    console.error(`No se encontró el elemento de audio para el horario ${horarioId}`);
+                    console.error(`[ERROR] No se encontró el elemento de audio para el horario ${horarioId}`);
                     showToast('error', 'No se pudo reproducir el audio');
                     return;
                 }
@@ -170,21 +193,71 @@ console.log('Audio Simple Controls script cargando...');
                     }
                 });
                 
+                // Verificar si el audio se puede reproducir
+                const audioReady = audioElement.readyState >= 2; // HAVE_CURRENT_DATA or higher
+                
+                if (!audioReady) {
+                    console.log(`[DEBUG] Audio para horario ID ${horarioId} no está listo para reproducir (readyState: ${audioElement.readyState}). Intentando cargar primero...`);
+                    // Forzar carga
+                    audioElement.load();
+                }
+                
                 // Reproducir o pausar el audio
                 if (!audioElement.paused) {
+                    console.log(`[DEBUG] Pausando audio para horario ID ${horarioId}`);
                     audioElement.pause();
                     this.innerHTML = '<i class="fas fa-play"></i>';
                 } else {
+                    console.log(`[DEBUG] Intentando reproducir audio para horario ID ${horarioId}`);
+                    
+                    // Si el audio no está cargado, mostrar indicador de carga
+                    if (!audioReady) {
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    }
+                    
                     const playPromise = audioElement.play();
                     
                     if (playPromise !== undefined) {
                         playPromise
                         .then(() => {
+                            console.log(`[DEBUG] Reproducción iniciada exitosamente para horario ID ${horarioId}`);
                             this.innerHTML = '<i class="fas fa-pause"></i>';
                         })
                         .catch(error => {
-                            console.error('Error al reproducir audio:', error);
-                            showToast('error', 'Error al reproducir: ' + error.message);
+                            console.error(`[ERROR] Error al reproducir audio para horario ID ${horarioId}:`, error);
+                            
+                            // Mensaje más específico según el error
+                            let errorMsg = 'Error al reproducir';
+                            
+                            // Si es un error de MEDIA_ERR_SRC_NOT_SUPPORTED
+                            if (audioElement.error && audioElement.error.code === 4) {
+                                errorMsg = 'Formato de audio no soportado';
+                            } 
+                            // Si es un error de MEDIA_ERR_NETWORK
+                            else if (audioElement.error && audioElement.error.code === 2) {
+                                errorMsg = 'Error de conexión al cargar el audio';
+                            }
+                            // Si es un error de AbortError
+                            else if (error.name === 'AbortError') {
+                                errorMsg = 'Carga de audio interrumpida';
+                                // Intento de reproducción automática después de un breve retraso
+                                setTimeout(() => {
+                                    console.log(`[DEBUG] Reintentando reproducción después de AbortError para horario ID ${horarioId}`);
+                                    audioElement.play()
+                                    .then(() => {
+                                        this.innerHTML = '<i class="fas fa-pause"></i>';
+                                    })
+                                    .catch(e => {
+                                        console.error(`[ERROR] Fallo en el reintento de reproducción:`, e);
+                                        this.innerHTML = '<i class="fas fa-play"></i>';
+                                        showToast('error', 'Error en reproducción automática: ' + e.message);
+                                    });
+                                }, 500);
+                                return; // No mostramos toast ni cambiamos el botón aquí
+                            }
+                            
+                            this.innerHTML = '<i class="fas fa-play"></i>';
+                            showToast('error', errorMsg + ': ' + error.message);
                         });
                     }
                 }
