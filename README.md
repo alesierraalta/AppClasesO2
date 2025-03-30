@@ -61,8 +61,8 @@ Si prefiere que el actualizador descargue automáticamente el código desde GitH
 ## Requisitos
 
 - Windows 7/8/10/11
-- Python 3.8 o superior (se instala automáticamente si usa instalador desde GitHub)
-- Conexión a Internet (solo para actualizar dependencias)
+- Python 3.8 o superior (se instala automáticamente con cualquiera de los instaladores)
+- Conexión a Internet (solo para actualizar dependencias y descargar Python si es necesario)
 
 ## Funcionalidades
 

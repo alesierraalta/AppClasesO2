@@ -54,15 +54,69 @@ echo Verificando instalacion de Python...
 python --version >nul 2>&1
 if %errorLevel% neq 0 (
     echo Python no está instalado en su sistema.
+    echo Descargando e instalando Python automáticamente...
     echo.
-    echo Necesita instalar Python 3.8 o superior:
-    echo 1. Descargue Python desde www.python.org/downloads/
-    echo 2. Al instalar, marque la opción "Add Python to PATH"
-    echo 3. Después de instalar Python, ejecute este script nuevamente
-    echo.
-    echo Presione cualquier tecla para salir...
-    pause
-    exit /b 1
+    
+    :: Crear directorio temporal si no existe
+    mkdir "%INSTALL_DIR%\temp" 2>nul
+    
+    :: Descargar Python
+    echo Descargando Python 3.8.10 (esto puede tomar unos minutos)...
+    echo Por favor, espere...
+    
+    :: Usar métodos alternativos para la descarga para evitar bloqueos de antivirus
+    >nul 2>nul powershell -Command "& {try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $webClient = New-Object System.Net.WebClient; $webClient.Headers.Add('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'); $webClient.DownloadFile('https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe', '%INSTALL_DIR%\temp\python-installer.exe') } catch { try { Start-BitsTransfer -Source 'https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe' -Destination '%INSTALL_DIR%\temp\python-installer.exe' } catch { exit 1 } } }"
+    
+    if %errorLevel% neq 0 (
+        echo.
+        echo ¡ERROR! No se pudo descargar Python.
+        echo - Intentando método alternativo de descarga...
+        
+        >nul 2>nul powershell -Command "& {try { $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe' -OutFile '%INSTALL_DIR%\temp\python-installer.exe' -UseBasicParsing } catch { exit 1 } }"
+        
+        if %errorLevel% neq 0 (
+            echo.
+            echo ¡ERROR! No se pudo descargar Python.
+            echo - Verifique su conexión a Internet
+            goto ERROR
+        ) else (
+            echo Descarga completada mediante método alternativo.
+        )
+    )
+    
+    :: Instalar Python silenciosamente y agregar al PATH
+    echo Instalando Python 3.8.10...
+    "%INSTALL_DIR%\temp\python-installer.exe" /quiet InstallAllUsers=0 PrependPath=1 Include_test=0 Include_doc=0
+    
+    if %errorLevel% neq 0 (
+        echo ¡ERROR! No se pudo instalar Python.
+        goto ERROR
+    )
+    
+    :: Refrescar variables de entorno para reconocer Python recién instalado
+    echo Actualizando variables de entorno...
+    :: Refrescar PATH para este script
+    for /f "tokens=2*" %%a in ('reg query HKCU\Environment /v PATH') do set "USERPATH=%%b"
+    for /f "tokens=2*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PATH') do set "SYSTEMPATH=%%b"
+    set "PATH=%USERPATH%;%SYSTEMPATH%;%PATH%"
+    
+    :: Verificar de nuevo si Python está instalado
+    echo Verificando instalación de Python...
+    python --version >nul 2>&1
+    if %errorLevel% neq 0 (
+        echo.
+        echo ¡ERROR! La instalación de Python falló o Python no está en el PATH.
+        echo Es posible que necesite cerrar y abrir una nueva ventana de comandos.
+        echo.
+        echo Para continuar la instalación manualmente:
+        echo 1. Reinicie su computadora para asegurar que PATH se actualice
+        echo 2. Ejecute este script nuevamente
+        goto ERROR
+    ) else (
+        echo.
+        echo Python ha sido instalado exitosamente.
+    )
+    
 ) else (
     echo Python ya está instalado en el sistema.
 )
