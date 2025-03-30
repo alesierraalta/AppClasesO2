@@ -1,6 +1,8 @@
 @echo off
 title Instalador Portable de GymManager
 color 0A
+setlocal enabledelayedexpansion
+
 echo ====================================================================
 echo            INSTALADOR PORTABLE DE GYMMANAGER
 echo ====================================================================
@@ -18,30 +20,113 @@ cls
 set "SCRIPT_DIR=%~dp0"
 set "REPO_ROOT=%SCRIPT_DIR%..\..\"
 set "INSTALL_DIR=%REPO_ROOT%"
-cd "%REPO_ROOT%"
+
+:: Eliminar comillas si las hay y asegurar que las rutas terminan con \
+set "INSTALL_DIR=!INSTALL_DIR:"=!"
+if not "!INSTALL_DIR:~-1!"=="\" set "INSTALL_DIR=!INSTALL_DIR!\"
+
+echo Cambiando al directorio de instalación: !INSTALL_DIR!
+cd /d "!INSTALL_DIR!"
+if %errorLevel% neq 0 (
+    echo ERROR: No se pudo cambiar al directorio !INSTALL_DIR!
+    echo Directorio actual: %cd%
+    goto ERROR
+)
 
 echo Instalando GymManager en modo portable en:
-echo %INSTALL_DIR%
+echo !INSTALL_DIR!
+echo.
+echo Directorio actual de trabajo: %cd%
 echo.
 
 :: Verificar que estamos en el repositorio
-if not exist "%REPO_ROOT%\main.py" (
+if not exist "!INSTALL_DIR!main.py" (
     echo.
     echo ¡ERROR! No se encontró el archivo main.py en el repositorio.
     echo Asegúrese de ejecutar este script desde la carpeta correcta:
     echo scripts\windows\instalar_portable.bat
     echo.
+    echo Ubicación actual: !INSTALL_DIR!
+    echo Contenido del directorio:
+    dir "!INSTALL_DIR!"
     goto ERROR
 )
 
-:: Crear directorios necesarios
+:: Crear directorios necesarios con verificación explícita
 echo Creando directorios de datos...
-mkdir "%INSTALL_DIR%\logs" 2>nul
-mkdir "%INSTALL_DIR%\database" 2>nul
-mkdir "%INSTALL_DIR%\backups" 2>nul
-mkdir "%INSTALL_DIR%\temp" 2>nul
-mkdir "%INSTALL_DIR%\app\uploads" 2>nul
-mkdir "%INSTALL_DIR%\app\core" 2>nul
+echo.
+
+echo Intentando crear: logs
+mkdir "!INSTALL_DIR!logs" 2>nul
+if not exist "!INSTALL_DIR!logs" (
+    echo ¡ERROR! No se pudo crear el directorio logs
+    echo Intentando con ruta completa...
+    mkdir "!INSTALL_DIR!logs"
+    if !errorLevel! neq 0 (
+        echo Error al crear el directorio logs
+        goto ERROR
+    )
+)
+echo - Directorio logs creado exitosamente.
+
+echo Intentando crear: database
+mkdir "!INSTALL_DIR!database" 2>nul
+if not exist "!INSTALL_DIR!database" (
+    echo ¡ERROR! No se pudo crear el directorio database
+    mkdir "!INSTALL_DIR!database"
+    if !errorLevel! neq 0 (
+        echo Error al crear el directorio database
+        goto ERROR
+    )
+)
+echo - Directorio database creado exitosamente.
+
+echo Intentando crear: backups
+mkdir "!INSTALL_DIR!backups" 2>nul
+if not exist "!INSTALL_DIR!backups" (
+    mkdir "!INSTALL_DIR!backups"
+    if !errorLevel! neq 0 (
+        echo Error al crear el directorio backups
+        goto ERROR
+    )
+)
+echo - Directorio backups creado exitosamente.
+
+echo Intentando crear: temp
+mkdir "!INSTALL_DIR!temp" 2>nul
+if not exist "!INSTALL_DIR!temp" (
+    mkdir "!INSTALL_DIR!temp"
+    if !errorLevel! neq 0 (
+        echo Error al crear el directorio temp
+        goto ERROR
+    )
+)
+echo - Directorio temp creado exitosamente.
+
+echo Intentando crear: app\uploads
+mkdir "!INSTALL_DIR!app\uploads" 2>nul
+if not exist "!INSTALL_DIR!app\uploads" (
+    mkdir "!INSTALL_DIR!app"
+    mkdir "!INSTALL_DIR!app\uploads"
+    if !errorLevel! neq 0 (
+        echo Error al crear el directorio app\uploads
+        goto ERROR
+    )
+)
+echo - Directorio app\uploads creado exitosamente.
+
+echo Intentando crear: app\core
+mkdir "!INSTALL_DIR!app\core" 2>nul
+if not exist "!INSTALL_DIR!app\core" (
+    mkdir "!INSTALL_DIR!app\core"
+    if !errorLevel! neq 0 (
+        echo Error al crear el directorio app\core
+        goto ERROR
+    )
+)
+echo - Directorio app\core creado exitosamente.
+
+echo.
 echo Directorios creados correctamente.
 echo.
 
@@ -51,74 +136,126 @@ cls
 
 :: Verificar si Python está instalado
 echo Verificando instalacion de Python...
-python --version >nul 2>&1
+where python >nul 2>nul
 if %errorLevel% neq 0 (
-    echo Python no está instalado en su sistema.
+    echo Python no se encuentra en el PATH del sistema.
     echo Descargando e instalando Python automáticamente...
     echo.
     
     :: Crear directorio temporal si no existe
-    mkdir "%INSTALL_DIR%\temp" 2>nul
+    echo Creando directorio temporal para Python...
+    if not exist "!INSTALL_DIR!temp" (
+        mkdir "!INSTALL_DIR!temp"
+    )
     
     :: Descargar Python
     echo Descargando Python 3.8.10 (esto puede tomar unos minutos)...
     echo Por favor, espere...
     
-    :: Usar métodos alternativos para la descarga para evitar bloqueos de antivirus
-    >nul 2>nul powershell -Command "& {try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $webClient = New-Object System.Net.WebClient; $webClient.Headers.Add('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'); $webClient.DownloadFile('https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe', '%INSTALL_DIR%\temp\python-installer.exe') } catch { try { Start-BitsTransfer -Source 'https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe' -Destination '%INSTALL_DIR%\temp\python-installer.exe' } catch { exit 1 } } }"
+    :: Simplificar la descarga para reducir errores
+    echo Intentando descargar Python con PowerShell...
+    powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe' -OutFile '!INSTALL_DIR!temp\python-installer.exe' } catch { Write-Host 'Error al descargar Python: $_'; exit 1 } }"
     
     if %errorLevel% neq 0 (
         echo.
-        echo ¡ERROR! No se pudo descargar Python.
+        echo ¡ERROR! No se pudo descargar Python con PowerShell.
         echo - Intentando método alternativo de descarga...
         
-        >nul 2>nul powershell -Command "& {try { $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe' -OutFile '%INSTALL_DIR%\temp\python-installer.exe' -UseBasicParsing } catch { exit 1 } }"
+        echo Intentando descargar con BITS...
+        powershell -Command "& {try { Start-BitsTransfer -Source 'https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe' -Destination '!INSTALL_DIR!temp\python-installer.exe' } catch { Write-Host 'Error al descargar Python con BITS: $_'; exit 1 } }"
         
         if %errorLevel% neq 0 (
             echo.
-            echo ¡ERROR! No se pudo descargar Python.
-            echo - Verifique su conexión a Internet
+            echo ¡ERROR! No se pudo descargar Python usando BITS.
+            echo.
+            echo Por favor, descargue Python manualmente desde:
+            echo https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe
+            echo.
+            echo Luego coloque el archivo en: !INSTALL_DIR!temp\python-installer.exe
+            echo y ejecute este script nuevamente.
+            echo.
+            echo Presione cualquier tecla para salir...
+            pause
             goto ERROR
         ) else (
-            echo Descarga completada mediante método alternativo.
+            echo Descarga completada mediante BITS Transfer.
         )
+    ) else (
+        echo Descarga completada con PowerShell.
+    )
+    
+    :: Verificar que el archivo de instalación exista
+    if not exist "!INSTALL_DIR!temp\python-installer.exe" (
+        echo.
+        echo ¡ERROR! No se encontró el instalador de Python después de la descarga.
+        echo Por favor, descargue Python manualmente.
+        goto ERROR
     )
     
     :: Instalar Python silenciosamente y agregar al PATH
+    echo.
     echo Instalando Python 3.8.10...
-    "%INSTALL_DIR%\temp\python-installer.exe" /quiet InstallAllUsers=0 PrependPath=1 Include_test=0 Include_doc=0
+    echo Este proceso puede tardar varios minutos. Por favor espere...
+    echo.
     
-    if %errorLevel% neq 0 (
-        echo ¡ERROR! No se pudo instalar Python.
-        goto ERROR
-    )
+    "!INSTALL_DIR!temp\python-installer.exe" /quiet InstallAllUsers=0 PrependPath=1 Include_test=0 Include_doc=0
+    
+    echo Esperando a que la instalación de Python finalice...
+    :: Esperar 30 segundos para dar tiempo a que la instalación se complete
+    ping 127.0.0.1 -n 30 > nul
     
     :: Refrescar variables de entorno para reconocer Python recién instalado
     echo Actualizando variables de entorno...
-    :: Refrescar PATH para este script
-    for /f "tokens=2*" %%a in ('reg query HKCU\Environment /v PATH') do set "USERPATH=%%b"
-    for /f "tokens=2*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PATH') do set "SYSTEMPATH=%%b"
-    set "PATH=%USERPATH%;%SYSTEMPATH%;%PATH%"
+    echo.
+    
+    :: Agregar Python al PATH del script actual
+    for /f "tokens=*" %%a in ('where /r "%USERPROFILE%\AppData\Local\Programs\Python" python.exe 2^>nul') do set "PYTHON_PATH=%%~dpa"
+    set "PATH=!PYTHON_PATH!;!PATH!"
     
     :: Verificar de nuevo si Python está instalado
     echo Verificando instalación de Python...
-    python --version >nul 2>&1
+    echo.
+    
+    where python > "!INSTALL_DIR!temp\python_path.txt"
     if %errorLevel% neq 0 (
         echo.
-        echo ¡ERROR! La instalación de Python falló o Python no está en el PATH.
-        echo Es posible que necesite cerrar y abrir una nueva ventana de comandos.
+        echo ¡ATENCIÓN! Python se instaló pero no se puede detectar en el PATH.
         echo.
-        echo Para continuar la instalación manualmente:
-        echo 1. Reinicie su computadora para asegurar que PATH se actualice
-        echo 2. Ejecute este script nuevamente
-        goto ERROR
+        echo Esto es normal después de la instalación, ya que es necesario reiniciar
+        echo el símbolo del sistema para que reconozca las nuevas variables de entorno.
+        echo.
+        echo Sin embargo, intentaremos continuar con la instalación usando la 
+        echo ruta completa a Python.
+        echo.
+        
+        :: Buscar Python en las ubicaciones habituales
+        for /f "tokens=*" %%a in ('dir /b /s "%LOCALAPPDATA%\Programs\Python\*python.exe" 2^>nul') do (
+            echo Python encontrado en: %%a
+            set "PYTHON_EXE=%%a"
+        )
+        
+        if not defined PYTHON_EXE (
+            echo Python no se pudo encontrar automáticamente.
+            echo.
+            echo Por favor, cierre esta ventana, abra una nueva línea de comandos 
+            echo y ejecute el script nuevamente.
+            echo.
+            echo Si el problema persiste, reinicie su computadora y vuelva a intentarlo.
+            echo.
+            pause
+            goto ERROR
+        )
+        
+        echo Usando Python desde: !PYTHON_EXE!
+        echo.
     ) else (
-        echo.
-        echo Python ha sido instalado exitosamente.
+        echo Python ha sido instalado correctamente y está disponible en el PATH.
+        set "PYTHON_EXE=python"
     )
     
 ) else (
     echo Python ya está instalado en el sistema.
+    set "PYTHON_EXE=python"
 )
 echo.
 
@@ -128,18 +265,34 @@ cls
 
 :: Instalar dependencias de Python
 echo Instalando dependencias de Python...
-if not exist "%INSTALL_DIR%\requirements.txt" (
+if not exist "!INSTALL_DIR!requirements.txt" (
     echo ¡ERROR! No se encontró el archivo requirements.txt
+    echo Buscando en: !INSTALL_DIR!requirements.txt
+    echo Directorio actual: %cd%
+    echo Contenido del directorio:
+    dir "!INSTALL_DIR!"
     goto ERROR
 )
 
-python -m pip install --upgrade pip
+echo Actualizando pip...
+if defined PYTHON_EXE (
+    "!PYTHON_EXE!" -m pip install --upgrade pip
+) else (
+    python -m pip install --upgrade pip
+)
+
 if %errorLevel% neq 0 (
     echo ¡ERROR! No se pudo actualizar pip.
     goto ERROR
 )
 
-pip install -r requirements.txt
+echo Instalando dependencias desde requirements.txt...
+if defined PYTHON_EXE (
+    "!PYTHON_EXE!" -m pip install -r "!INSTALL_DIR!requirements.txt"
+) else (
+    pip install -r "!INSTALL_DIR!requirements.txt"
+)
+
 if %errorLevel% neq 0 (
     echo.
     echo ¡ERROR! No se pudieron instalar las dependencias.
@@ -174,8 +327,9 @@ if not "%PC_NUM%"=="1" if not "%PC_NUM%"=="2" if not "%PC_NUM%"=="3" (
 )
 
 :: Configurar archivos
-echo { "pc_number": %PC_NUM%, "is_server": %PC_NUM% == 1, "sync_enabled": true } > "%INSTALL_DIR%\app\core\pc_config.json"
-echo { "install_mode": "portable", "app_path": "%INSTALL_DIR%" } > "%INSTALL_DIR%\app\core\install_config.json"
+echo Guardando configuración en: !INSTALL_DIR!app\core\pc_config.json
+echo { "pc_number": %PC_NUM%, "is_server": %PC_NUM% == 1, "sync_enabled": true } > "!INSTALL_DIR!app\core\pc_config.json"
+echo { "install_mode": "portable", "app_path": "!INSTALL_DIR!" } > "!INSTALL_DIR!app\core\install_config.json"
 
 :: Configurar sincronización si no es la PC principal
 if not "%PC_NUM%"=="1" (
@@ -190,7 +344,7 @@ if not "%PC_NUM%"=="1" (
         set SERVER_IP=192.168.1.100
     )
     
-    echo { "server_ip": "%SERVER_IP%", "server_port": 5000 } > "%INSTALL_DIR%\app\core\network_config.json"
+    echo { "server_ip": "%SERVER_IP%", "server_port": 5000 } > "!INSTALL_DIR!app\core\network_config.json"
     echo Configuración de red guardada.
 ) else (
     echo Esta PC es la principal. No se requiere configuración adicional.
@@ -199,10 +353,16 @@ echo.
 
 :: Crear base de datos si no existe
 echo Configurando base de datos...
-if not exist "%INSTALL_DIR%\database\gimnasio.db" (
-    cd "%INSTALL_DIR%"
-    if exist "%INSTALL_DIR%\database\create_tables.py" (
-        python database\create_tables.py
+if not exist "!INSTALL_DIR!database\gimnasio.db" (
+    cd /d "!INSTALL_DIR!"
+    if exist "!INSTALL_DIR!database\create_tables.py" (
+        echo Ejecutando script de creación de tablas...
+        
+        if defined PYTHON_EXE (
+            "!PYTHON_EXE!" "!INSTALL_DIR!database\create_tables.py"
+        ) else (
+            python database\create_tables.py
+        )
         
         if %errorLevel% neq 0 (
             echo ¡ERROR! No se pudo crear la base de datos.
@@ -224,48 +384,64 @@ pause
 cls
 
 :: Crear accesos directos
-echo Creando accesos directos...
+echo Creando accesos directos de ejecución...
 
 :: Crear o actualizar scripts de ejecución
-if not exist "%INSTALL_DIR%\scripts\windows\run_portable.bat" (
-    echo @echo off > "%INSTALL_DIR%\scripts\windows\run_portable.bat"
-    echo cd "%INSTALL_DIR%" >> "%INSTALL_DIR%\scripts\windows\run_portable.bat"
-    echo python main.py >> "%INSTALL_DIR%\scripts\windows\run_portable.bat"
-    echo pause >> "%INSTALL_DIR%\scripts\windows\run_portable.bat"
+echo Creando script run_portable.bat...
+if exist "!INSTALL_DIR!scripts\windows\run_portable.bat" (
+    del "!INSTALL_DIR!scripts\windows\run_portable.bat"
 )
+(
+echo @echo off
+echo cd /d "!INSTALL_DIR!"
+echo python main.py
+echo pause
+) > "!INSTALL_DIR!scripts\windows\run_portable.bat"
 
-if not exist "%INSTALL_DIR%\scripts\windows\administrar_portable.bat" (
-    echo @echo off > "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo cd "%INSTALL_DIR%" >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo echo ===== PANEL DE ADMINISTRACION ===== >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo echo. >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo echo 1. Iniciar GymManager >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo echo 2. Actualizar GymManager >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo echo 3. Verificar base de datos >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo echo 4. Salir >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo echo. >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo set /p opcion="Seleccione una opcion: " >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo. >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo if "%%opcion%%"=="1" (cd "%INSTALL_DIR%" ^& python main.py) >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo if "%%opcion%%"=="2" (echo Actualizando... ^& call "%INSTALL_DIR%\scripts\windows\actualizar_portable.bat") >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo if "%%opcion%%"=="3" (cd "%INSTALL_DIR%" ^& python database\view_tables.py ^& pause) >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo if "%%opcion%%"=="4" exit >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
-    echo. >> "%INSTALL_DIR%\scripts\windows\administrar_portable.bat"
+echo Creando script administrar_portable.bat...
+if exist "!INSTALL_DIR!scripts\windows\administrar_portable.bat" (
+    del "!INSTALL_DIR!scripts\windows\administrar_portable.bat"
 )
+(
+echo @echo off
+echo cd /d "!INSTALL_DIR!"
+echo echo ===== PANEL DE ADMINISTRACION =====
+echo echo.
+echo echo 1. Iniciar GymManager
+echo echo 2. Actualizar GymManager
+echo echo 3. Verificar base de datos
+echo echo 4. Salir
+echo echo.
+echo set /p opcion="Seleccione una opcion: "
+echo.
+echo if "%%opcion%%"=="1" ^(cd /d "!INSTALL_DIR!" ^& python main.py^)
+echo if "%%opcion%%"=="2" ^(echo Actualizando... ^& call "!INSTALL_DIR!scripts\windows\actualizar_portable.bat"^)
+echo if "%%opcion%%"=="3" ^(cd /d "!INSTALL_DIR!" ^& python database\view_tables.py ^& pause^)
+echo if "%%opcion%%"=="4" exit
+echo.
+) > "!INSTALL_DIR!scripts\windows\administrar_portable.bat"
 
 :: Creación del script de inicio rápido en la raíz
-if not exist "%INSTALL_DIR%\GymManager.bat" (
-    echo @echo off > "%INSTALL_DIR%\GymManager.bat"
-    echo cd "%INSTALL_DIR%" >> "%INSTALL_DIR%\GymManager.bat"
-    echo python main.py >> "%INSTALL_DIR%\GymManager.bat"
-    echo pause >> "%INSTALL_DIR%\GymManager.bat"
+echo Creando acceso directo GymManager.bat...
+if exist "!INSTALL_DIR!GymManager.bat" (
+    del "!INSTALL_DIR!GymManager.bat"
 )
+(
+echo @echo off
+echo cd /d "!INSTALL_DIR!"
+echo python main.py
+echo pause
+) > "!INSTALL_DIR!GymManager.bat"
 
 :: Creación del script de administración rápido en la raíz
-if not exist "%INSTALL_DIR%\Administrar.bat" (
-    echo @echo off > "%INSTALL_DIR%\Administrar.bat"
-    echo call "%INSTALL_DIR%\scripts\windows\administrar_portable.bat" >> "%INSTALL_DIR%\Administrar.bat"
+echo Creando acceso directo Administrar.bat...
+if exist "!INSTALL_DIR!Administrar.bat" (
+    del "!INSTALL_DIR!Administrar.bat"
 )
+(
+echo @echo off
+echo call "!INSTALL_DIR!scripts\windows\administrar_portable.bat"
+) > "!INSTALL_DIR!Administrar.bat"
 
 echo Accesos directos creados en la carpeta de la aplicación.
 echo.
@@ -280,7 +456,12 @@ echo            INSTALACION PORTABLE COMPLETADA EXITOSAMENTE
 echo ====================================================================
 echo.
 echo GymManager ha sido instalado en modo portable en:
-echo %INSTALL_DIR%
+echo !INSTALL_DIR!
+echo.
+echo Verificación final:
+echo ✓ Directorios creados
+if exist "!INSTALL_DIR!app\core\pc_config.json" echo ✓ Configuración guardada
+if exist "!INSTALL_DIR!GymManager.bat" echo ✓ Accesos directos creados
 echo.
 echo Para iniciar la aplicación, use el archivo:
 echo - GymManager.bat (en la carpeta principal)
@@ -304,11 +485,14 @@ echo ====================================================================
 echo.
 echo Ha ocurrido un error durante la instalación portable.
 echo.
+echo Detalles del sistema:
+echo - Directorio actual: %cd%
+echo - Directorio de instalación: !INSTALL_DIR!
+echo.
 echo Intente los siguientes pasos:
-echo 1. Verifique que Python está instalado correctamente
-echo 2. Compruebe que está ejecutando el script desde el directorio correcto
-echo 3. Asegúrese de tener permisos de escritura en la carpeta actual
-echo 4. Si el problema persiste, contacte al soporte técnico
+echo 1. Asegúrese de que está ejecutando el script desde el directorio correcto
+echo 2. Verifique que tiene permisos de escritura en la carpeta actual
+echo 3. Si el problema persiste, contacte al soporte técnico
 echo.
 echo Presione cualquier tecla para salir...
 pause
