@@ -17,7 +17,7 @@ Sistema de gestión integral para gimnasios, con funcionalidades de audio y noti
 
 Para instalar directamente desde GitHub:
 
-1. [Descargar el instalador](https://github.com/alesierraalta/AppClasesO2/raw/main/scripts/windows/instalar_desde_github.bat)
+1. **[➡️ DESCARGAR INSTALADOR](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/instalar_desde_github.bat)** - *Haga clic derecho y seleccione "Guardar enlace como..."*
 2. Ejecutar `instalar_desde_github.bat` como administrador
 3. Seguir las instrucciones en pantalla
 
@@ -31,7 +31,7 @@ Este instalador configurará automáticamente:
 
 Para actualizar a la versión más reciente:
 
-1. [Descargar el actualizador](https://github.com/alesierraalta/AppClasesO2/raw/main/scripts/windows/actualizar_desde_github.bat)
+1. **[➡️ DESCARGAR ACTUALIZADOR](https://raw.githubusercontent.com/alesierraalta/AppClasesO2/main/scripts/windows/actualizar_desde_github.bat)** - *Haga clic derecho y seleccione "Guardar enlace como..."*
 2. Ejecutar `actualizar_desde_github.bat` como administrador
 3. Seguir las instrucciones en pantalla
 
