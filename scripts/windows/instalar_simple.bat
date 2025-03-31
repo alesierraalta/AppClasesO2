@@ -128,6 +128,14 @@ if %errorlevel% neq 0 (
     )
 )
 
+:: Configurar HTTPS
+echo Configurando HTTPS...
+if not exist "C:\GymManager\certificates" mkdir "C:\GymManager\certificates"
+if not exist "C:\GymManager\certificates\server.crt" (
+    echo Generando certificados SSL...
+    python -c "from OpenSSL import crypto; k = crypto.PKey(); k.generate_key(crypto.TYPE_RSA, 2048); cert = crypto.X509(); cert.get_subject().C = 'ES'; cert.get_subject().ST = 'Madrid'; cert.get_subject().L = 'Madrid'; cert.get_subject().O = 'GymManager'; cert.get_subject().OU = 'GymManager'; cert.get_subject().CN = 'localhost'; cert.set_serial_number(1000); cert.gmtime_adj_notBefore(0); cert.gmtime_adj_notAfter(365*24*60*60); cert.set_issuer(cert.get_subject()); cert.set_pubkey(k); cert.sign(k, 'sha256'); open('C:\\GymManager\\certificates\\server.crt', 'wb').write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert)); open('C:\\GymManager\\certificates\\server.key', 'wb').write(crypto.dump_privatekey(crypto.FILETYPE_PEM, k))"
+)
+
 :: Configurar base de datos
 echo Configurando base de datos...
 python main.py --setup-db

@@ -185,6 +185,7 @@ cd /d C:\GymManager
 echo Instalando versiones compatibles de dependencias...
 %python_cmd% -m pip install werkzeug==2.3.7
 %python_cmd% -m pip install -r requirements.txt
+%python_cmd% -m pip install pyOpenSSL
 
 :: Verificar si se solucionó el problema de url_decode
 echo Verificando dependencias...
@@ -258,6 +259,14 @@ if %errorlevel% neq 0 (
     ) else (
         echo OK: Problema de url_decode solucionado correctamente.
     )
+)
+
+:: Configurar HTTPS
+echo Configurando HTTPS...
+if not exist "C:\GymManager\certificates" mkdir "C:\GymManager\certificates"
+if not exist "C:\GymManager\certificates\server.crt" (
+    echo Generando certificados SSL...
+    %python_cmd% -c "from OpenSSL import crypto; k = crypto.PKey(); k.generate_key(crypto.TYPE_RSA, 2048); cert = crypto.X509(); cert.get_subject().C = 'ES'; cert.get_subject().ST = 'Madrid'; cert.get_subject().L = 'Madrid'; cert.get_subject().O = 'GymManager'; cert.get_subject().OU = 'GymManager'; cert.get_subject().CN = 'localhost'; cert.set_serial_number(1000); cert.gmtime_adj_notBefore(0); cert.gmtime_adj_notAfter(365*24*60*60); cert.set_issuer(cert.get_subject()); cert.set_pubkey(k); cert.sign(k, 'sha256'); open('C:\\GymManager\\certificates\\server.crt', 'wb').write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert)); open('C:\\GymManager\\certificates\\server.key', 'wb').write(crypto.dump_privatekey(crypto.FILETYPE_PEM, k))"
 )
 
 echo Presione cualquier tecla para continuar con la configuración...
