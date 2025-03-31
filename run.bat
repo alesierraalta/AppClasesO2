@@ -9,7 +9,7 @@ if not exist venv (
 call venv\Scripts\activate
 
 :: Establecer variables de entorno
-set FLASK_APP=app.py
+set FLASK_APP=app:app
 set FLASK_ENV=development
 :: NO MODIFICAR MANUALMENTE - ESTE VALOR SE ACTUALIZARÁ AUTOMÁTICAMENTE
 set NOTIFICATION_PHONE_NUMBER=+584244461682
@@ -22,7 +22,7 @@ pip install -r requirements.txt
 :: No eliminamos la base de datos para mantener persistencia
 :: del gimnasio.db
 echo Inicializando la base de datos...
-flask init-db
+python -c "from app import db, app; app.app_context().push(); db.create_all()"
 
 echo Iniciando la aplicación...
 :: Añadimos la opción para ignorar errores y continuar
