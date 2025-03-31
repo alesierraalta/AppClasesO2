@@ -16,34 +16,40 @@ set NOTIFICATION_PHONE_NUMBER=+584244461682
 :: Nota: Reemplazar +numero_a_notificar_aqui con el número completo incluyendo el código del país
 :: por ejemplo: +56912345678 para Chile o +34612345678 para España (sin espacios)
 
-echo Instalando dependencias...
+echo Instalando dependencias principales...
 pip install -r requirements.txt
+
+:: Instalación de dependencias adicionales que podrían faltar
+echo Verificando dependencias adicionales...
+pip install flask-login
 
 :: No eliminamos la base de datos para mantener persistencia
 :: del gimnasio.db
 echo Inicializando la base de datos...
-:: Intentamos diferentes opciones para crear la base de datos
-python -c "try:
-    from app import db as db_app, create_app 
-    app = create_app()
-    with app.app_context():
-        db_app.create_all()
-    print('Base de datos inicializada correctamente (método 1)')
-except Exception as e1:
-    try:
-        from main import app, db
-        with app.app_context():
-            db.create_all()
-        print('Base de datos inicializada correctamente (método 2)')
-    except Exception as e2:
-        try:
-            import sqlite3
-            conn = sqlite3.connect('gimnasio.db')
-            print('Base de datos creada correctamente (método 3)')
-            conn.close()
-        except Exception as e3:
-            print(f'Error al crear la base de datos: {e1}\\n{e2}\\n{e3}')
-"
+:: Usando un enfoque de script separado para evitar problemas con comandos multilinea
+echo import sqlite3 > create_db.py
+echo try: >> create_db.py
+echo     from app import db as db_app, create_app >> create_db.py
+echo     app = create_app() >> create_db.py
+echo     with app.app_context(): >> create_db.py
+echo         db_app.create_all() >> create_db.py
+echo     print('Base de datos inicializada correctamente (metodo 1)') >> create_db.py
+echo except Exception as e1: >> create_db.py
+echo     try: >> create_db.py
+echo         from main import app, db >> create_db.py
+echo         with app.app_context(): >> create_db.py
+echo             db.create_all() >> create_db.py
+echo         print('Base de datos inicializada correctamente (metodo 2)') >> create_db.py
+echo     except Exception as e2: >> create_db.py
+echo         try: >> create_db.py
+echo             conn = sqlite3.connect('gimnasio.db') >> create_db.py
+echo             print('Base de datos creada correctamente (metodo 3)') >> create_db.py
+echo             conn.close() >> create_db.py
+echo         except Exception as e3: >> create_db.py
+echo             print(f'Error al crear la base de datos: {e1}\\n{e2}\\n{e3}') >> create_db.py
+
+:: Ejecutar el script
+python create_db.py
 
 echo Iniciando la aplicación...
 :: Añadimos la opción para ignorar errores y continuar
